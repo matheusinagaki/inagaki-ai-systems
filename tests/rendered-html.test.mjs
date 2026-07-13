@@ -29,6 +29,8 @@ test("renders the finished portfolio and its professional metadata", async () =>
   assert.match(html, /Dossiês de produção/);
   assert.match(html, /20M\+/);
   assert.match(html, /92%/);
+  assert.match(html, /JUN 2027/);
+  assert.match(html, /conclusão prevista para junho de 2027/);
   assert.match(html, /href="https:\/\/github\.com\/mtsvi-moraes"/);
   assert.match(html, /href="https:\/\/linkedin\.com\/in\/mvinagaki"/);
   assert.match(html, /href="\/Matheus-Inagaki-CV\.pdf"/);
@@ -59,6 +61,7 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /--bg: #ded8cc/);
   assert.match(css, /--surface: #eae4d8/);
   assert.match(css, /--accent: #ff6535/);
+  assert.match(css, /\.orbital-system::after \{ content: none; display: none; \}/);
   assert.match(css, /\.site-header \{ position: fixed; inset: 0 auto 0 0/);
   assert.match(css, /\.theme-toggle/);
   assert.match(css, /\.mobile-nav\.open/);

@@ -124,7 +124,7 @@ h1 .accent-line { margin: 18px 0 0 clamp(42px, 8vw, 130px); color: var(--accent)
 .system-topline { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--line); color: var(--muted); font: 650 8px/1 ui-monospace, monospace; letter-spacing: .13em; }
 .orbital-system { position: relative; height: 280px; margin: 18px 0; display: grid; place-items: center; background: repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px); overflow: hidden; }
 .orbital-system::before { content: "CONTEXT\A RETRIEVAL\A REASONING\A OUTPUT"; white-space: pre; position: absolute; left: 10px; top: 10px; color: var(--muted); font: 650 8px/1.8 ui-monospace, monospace; letter-spacing: .12em; }
-.orbital-system::after { content: "INPUT → CONTEXT → OUTPUT"; position: absolute; right: 10px; bottom: 10px; padding: 6px 8px; border: 1px solid var(--line); color: var(--muted); font: 700 7px/1 ui-monospace, monospace; letter-spacing: .09em; }
+.orbital-system::after { content: none; display: none; }
 .orbit { position: absolute; border: 1px solid var(--line-strong); border-radius: 0; animation: none; }
 .orbit-one { width: 176px; height: 176px; transform: rotate(45deg); }
 .orbit-two { width: 250px; height: 126px; border-style: dashed; }
@@ -222,7 +222,7 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .language-list div { min-height: 65px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top: 1px solid var(--line); }
 .language-list strong { font-size: 13px; font-weight: 650; }
 .language-list span { color: var(--muted); font: 600 8px/1.3 ui-monospace, monospace; text-align: right; text-transform: uppercase; }
-.education-year { margin: 45px 0 auto; color: var(--accent-secondary); font: 650 62px/.9 "Segoe UI Variable", sans-serif; letter-spacing: -.07em; }
+.education-year { margin: 45px 0 auto; color: var(--accent-secondary); font: 650 clamp(46px, 5vw, 62px)/.9 "Segoe UI Variable", sans-serif; letter-spacing: -.065em; }
 
 /* Handoff protocol */
 .contact-section { position: relative; min-height: 580px; padding: 90px max(34px, calc((100vw - var(--rail) - 1020px) / 2)); display: grid; place-items: center; overflow: hidden; background: var(--contact); color: var(--accent-contrast); }

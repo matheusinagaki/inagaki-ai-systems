@@ -150,7 +150,7 @@ const content = {
     ],
     educationLabel: "Formação",
     educationTitle: "Ciência da Computação",
-    educationCopy: "Universidade Anhembi Morumbi · conclusão prevista para 2027",
+    educationCopy: "Universidade Anhembi Morumbi · conclusão prevista para junho de 2027",
     ctaEyebrow: "Pronto para o próximo desafio",
     ctaTitle: "Tem um problema difícil? Melhor ainda.",
     ctaCopy:
@@ -304,7 +304,7 @@ const content = {
     ],
     educationLabel: "Education",
     educationTitle: "B.Sc. in Computer Science",
-    educationCopy: "Universidade Anhembi Morumbi · expected graduation in 2027",
+    educationCopy: "Universidade Anhembi Morumbi · expected graduation in June 2027",
     ctaEyebrow: "Ready for the next challenge",
     ctaTitle: "Got a hard problem? Even better.",
     ctaCopy:
@@ -567,7 +567,7 @@ export default function Home() {
             </article>
             <article className="about-card education-card reveal">
               <p className="card-label">{t.educationLabel}</p>
-              <div className="education-year">2027</div>
+              <div className="education-year">JUN 2027</div>
               <h3>{t.educationTitle}</h3><p>{t.educationCopy}</p>
             </article>
           </div>
