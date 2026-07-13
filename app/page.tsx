@@ -347,6 +347,7 @@ export default function Home() {
       if (event.key === "Escape") {
         setMenuOpen(false);
         setDesktopRailOpen(false);
+        localStorage.setItem("desktop-rail", "closed");
       }
     };
     window.addEventListener("keydown", closeMenu);
