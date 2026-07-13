@@ -7,7 +7,7 @@ GenAI, RAG, agentes, machine learning e sistemas de IA prontos para produção.
 
 ## Prerequisites
 
-- Node.js `>=22.13.0`
+- Node.js `22.x`
 
 ## Quick Start
 
