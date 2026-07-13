@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 type Language = "pt" | "en";
+type Theme = "light" | "dark";
 
 const content = {
   pt: {
@@ -317,11 +318,39 @@ const content = {
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
+  const [theme, setTheme] = useState<Theme>("dark");
+  const [menuOpen, setMenuOpen] = useState(false);
   const t = content[language];
 
   useEffect(() => {
     document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
   }, [language]);
+
+  useEffect(() => {
+    const activeTheme = document.documentElement.dataset.theme;
+    if (activeTheme === "light" || activeTheme === "dark") setTheme(activeTheme);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const closeMenu = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", closeMenu);
+    return () => window.removeEventListener("keydown", closeMenu);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme: Theme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+    localStorage.setItem("theme", nextTheme);
+  };
 
   return (
     <main id="top">
@@ -346,11 +375,45 @@ export default function Home() {
             <button className={language === "pt" ? "active" : ""} onClick={() => setLanguage("pt")} aria-pressed={language === "pt"}>PT</button>
             <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")} aria-pressed={language === "en"}>EN</button>
           </div>
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-pressed={theme === "dark"}
+            aria-label={language === "pt" ? `Ativar modo ${theme === "dark" ? "claro" : "escuro"}` : `Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
+            <span className="theme-icon" aria-hidden="true">{theme === "dark" ? "☾" : "☼"}</span>
+            <span className="theme-label">{theme === "dark" ? "Dark" : "Light"}</span>
+          </button>
           <a className="resume-link" href="/Matheus-Inagaki-CV.pdf" download>
             {t.resume}<span aria-hidden="true">↓</span>
           </a>
+          <button
+            className="menu-toggle"
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={language === "pt" ? "Abrir navegação" : "Open navigation"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span /><span />
+          </button>
         </div>
       </header>
+
+      <nav id="mobile-navigation" className={`mobile-nav ${menuOpen ? "open" : ""}`} aria-label={language === "pt" ? "Navegação mobile" : "Mobile navigation"}>
+        <div className="mobile-nav-inner">
+          {t.nav.map(([label, href], index) => (
+            <a key={href} href={href} onClick={() => setMenuOpen(false)}>
+              <span>0{index + 1}</span>{label}
+            </a>
+          ))}
+          <div className="mobile-nav-actions">
+            <a href="/Matheus-Inagaki-CV.pdf" download onClick={() => setMenuOpen(false)}>{t.resume}<span aria-hidden="true">↓</span></a>
+            <a href="mailto:matheusinagakimoraes97@gmail.com" onClick={() => setMenuOpen(false)}>{t.contact}<span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </nav>
 
       <div id="conteudo">
         <section className="hero" aria-labelledby="hero-title">

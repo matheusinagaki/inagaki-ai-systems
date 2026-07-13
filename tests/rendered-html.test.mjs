@@ -46,10 +46,17 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /type Language = "pt" \| "en"/);
   assert.match(page, /aria-pressed/);
   assert.match(page, /document\.documentElement\.lang/);
+  assert.match(page, /localStorage\.setItem\("theme"/);
+  assert.match(page, /aria-controls="mobile-navigation"/);
+  assert.match(page, /event\.key === "Escape"/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
+  assert.match(css, /:root\[data-theme="light"\]/);
+  assert.match(css, /\.theme-toggle/);
+  assert.match(css, /\.mobile-nav\.open/);
   assert.match(layout, /x-forwarded-host/);
   assert.match(layout, /\/og\.png/);
+  assert.match(layout, /prefers-color-scheme: light/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 });
