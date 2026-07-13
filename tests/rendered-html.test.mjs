@@ -55,6 +55,8 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /:root\[data-theme="light"\]/);
+  assert.match(css, /--bg: #e8e4dc/);
+  assert.match(css, /--surface: #f1ede5/);
   assert.match(css, /\.theme-toggle/);
   assert.match(css, /\.mobile-nav\.open/);
   assert.match(css, /\.timeline-item\.selected/);
