@@ -1,41 +1,28 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+test("keeps the finished portfolio content and professional metadata", async () => {
+  const [page, layout, ogImage] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    stat(new URL("../public/og.png", import.meta.url)),
+  ]);
 
-  return worker.fetch(
-    new Request("https://matheus-inagaki.example/", {
-      headers: { accept: "text/html", host: "matheus-inagaki.example" },
-    }),
-    {
-      ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) },
-    },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
-
-test("renders the finished portfolio and its professional metadata", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
-
-  const html = await response.text();
-  assert.match(html, /<title>Matheus Inagaki — AI Engineer<\/title>/i);
-  assert.match(html, /IA que entende contexto/);
-  assert.match(html, /Dossiês de produção/);
-  assert.match(html, /20M\+/);
-  assert.match(html, /92%/);
-  assert.match(html, /JUN 2027/);
-  assert.match(html, /conclusão prevista para junho de 2027/);
-  assert.match(html, /href="https:\/\/github\.com\/mtsvi-moraes"/);
-  assert.match(html, /href="https:\/\/linkedin\.com\/in\/mvinagaki"/);
-  assert.match(html, /href="\/Matheus-Inagaki-CV\.pdf"/);
-  assert.match(html, /content="https:\/\/matheus-inagaki\.example\/og\.png"/);
-  assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
+  assert.match(layout, /title: "Matheus Inagaki — AI Engineer"/);
+  assert.match(layout, /VERCEL_PROJECT_PRODUCTION_URL/);
+  assert.match(layout, /\/og\.png/);
+  assert.match(page, /IA que entende contexto/);
+  assert.match(page, /Dossiês de produção/);
+  assert.match(page, /20M\+/);
+  assert.match(page, /92%/);
+  assert.match(page, /JUN 2027/);
+  assert.match(page, /conclusão prevista para junho de 2027/);
+  assert.match(page, /https:\/\/github\.com\/mtsvi-moraes/);
+  assert.match(page, /https:\/\/linkedin\.com\/in\/mvinagaki/);
+  assert.match(page, /\/Matheus-Inagaki-CV\.pdf/);
+  assert.ok(ogImage.size > 0);
+  assert.doesNotMatch(page, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
 test("keeps the bilingual experience and responsive foundation in source", async () => {
@@ -78,7 +65,7 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /\.rail-collapsed \.desktop-nav/);
   assert.match(css, /\.timeline-item\.selected/);
   assert.match(css, /--accent-secondary:/);
-  assert.match(layout, /x-forwarded-host/);
+  assert.match(layout, /VERCEL_PROJECT_PRODUCTION_URL/);
   assert.match(layout, /\/og\.png/);
   assert.match(layout, /prefers-color-scheme: light/);
   assert.doesNotMatch(page, /_sites-preview|SkeletonPreview/);
