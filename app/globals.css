@@ -86,11 +86,12 @@ section[id] { scroll-margin-top: 32px; }
 .desktop-nav a:hover { padding-left: 14px; background: var(--accent-soft); color: var(--text); }
 .desktop-nav a:hover::after { border-color: var(--accent); background: var(--accent); }
 .header-actions { width: 100%; margin-top: auto; display: grid; gap: 8px; }
-.language-switch { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border: 1px solid var(--line); }
+.language-switch { display: grid; grid-template-columns: 1fr 1fr; width: 100%; border: 1px solid var(--line); transition: border-color .2s; }
 .language-switch button { height: 34px; padding: 0; background: transparent; color: var(--muted); font: 750 9px/1 ui-monospace, monospace; cursor: pointer; }
 .language-switch button.active { background: var(--switch-bg); color: var(--switch-text); }
 .theme-toggle { width: 100%; min-height: 40px; padding: 0 11px; display: flex; align-items: center; justify-content: space-between; background: transparent; border: 1px solid var(--line); cursor: pointer; }
-.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.language-switch:hover, .language-switch:focus-within, .theme-toggle:hover, .menu-toggle:hover { border-color: var(--accent); }
+.theme-toggle:hover { color: var(--accent); }
 .theme-icon { font-size: 17px; }
 .theme-label { display: block; color: var(--muted); font: 700 8px/1 ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
 .resume-link { width: 100%; min-height: 42px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--accent-secondary); color: #16180f; font: 800 8px/1.15 ui-monospace, monospace; text-align: left; text-transform: uppercase; }
@@ -103,11 +104,13 @@ main { padding-left: var(--rail); transition: padding-left .3s ease; }
   .site-header { transition: width .3s ease, padding .3s ease; }
   .brand-name, .desktop-nav, .header-actions { transition: opacity .18s ease, visibility .18s ease; }
   .rail-collapsed .site-header { padding-inline: 14px; align-items: center; }
-  .rail-collapsed .brand { justify-content: center; }
+  .rail-collapsed .brand { width: 48px; justify-content: center; }
+  .rail-collapsed .brand-mark { width: 48px; height: 48px; }
+  .rail-collapsed .brand-name { display: none; }
   .rail-collapsed .brand-name,
   .rail-collapsed .desktop-nav,
   .rail-collapsed .header-actions { opacity: 0; visibility: hidden; pointer-events: none; }
-  .rail-collapsed .rail-toggle { width: 46px; padding: 0; justify-content: center; }
+  .rail-collapsed .rail-toggle { width: 48px; padding: 0; justify-content: center; }
   .rail-collapsed .rail-toggle-label { display: none; }
 }
 
@@ -303,7 +306,7 @@ footer p { text-align: center; }
   .language-switch button { height: 40px; }
   .theme-toggle { flex: 0 0 42px; width: 42px; height: 42px; min-height: 42px; padding: 0; justify-content: center; }
   .theme-label { display: none; }
-  .menu-toggle { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-content: center; gap: 6px; background: transparent; border: 1px solid var(--line); }
+  .menu-toggle { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-content: center; gap: 6px; background: transparent; border: 1px solid var(--line); cursor: pointer; transition: border-color .2s; }
   .menu-toggle span { width: 16px; height: 1px; background: var(--text); transition: transform .2s; }
   .mobile-nav { position: fixed; inset: 70px 0 0; z-index: 90; padding: 20px; background: var(--bg); transform: translateX(100%); transition: transform .3s ease; }
   .mobile-nav.open { display: grid; transform: translateX(0); }

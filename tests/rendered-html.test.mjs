@@ -72,6 +72,9 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /\.theme-toggle/);
   assert.match(css, /\.mobile-nav\.open/);
   assert.match(css, /main\.rail-collapsed \{ --rail: 76px; \}/);
+  assert.match(css, /\.rail-collapsed \.brand-name \{ display: none; \}/);
+  assert.match(css, /\.rail-collapsed \.rail-toggle \{ width: 48px;/);
+  assert.match(css, /\.language-switch:hover, \.language-switch:focus-within, \.theme-toggle:hover, \.menu-toggle:hover/);
   assert.match(css, /\.rail-collapsed \.desktop-nav/);
   assert.match(css, /\.timeline-item\.selected/);
   assert.match(css, /--accent-secondary:/);
