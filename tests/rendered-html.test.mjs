@@ -25,7 +25,8 @@ test("renders the finished portfolio and its professional metadata", async () =>
 
   const html = await response.text();
   assert.match(html, /<title>Matheus Inagaki — AI Engineer<\/title>/i);
-  assert.match(html, /Arquitetando IA que/);
+  assert.match(html, /IA que entende contexto/);
+  assert.match(html, /Dossiês de produção/);
   assert.match(html, /20M\+/);
   assert.match(html, /92%/);
   assert.match(html, /href="https:\/\/github\.com\/mtsvi-moraes"/);
@@ -55,8 +56,10 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /:root\[data-theme="light"\]/);
-  assert.match(css, /--bg: #e8e4dc/);
-  assert.match(css, /--surface: #f1ede5/);
+  assert.match(css, /--bg: #ded8cc/);
+  assert.match(css, /--surface: #eae4d8/);
+  assert.match(css, /--accent: #ff6535/);
+  assert.match(css, /\.site-header \{ position: fixed; inset: 0 auto 0 0/);
   assert.match(css, /\.theme-toggle/);
   assert.match(css, /\.mobile-nav\.open/);
   assert.match(css, /\.timeline-item\.selected/);

@@ -14,11 +14,11 @@ const content = {
       ["Sobre", "#sobre"],
     ],
     resume: "Baixar CV",
-    available: "Disponível para desafios de alto impacto",
-    role: "AI Engineer · GenAI · RAG · AI Agents",
-    heroLine1: "Arquitetando IA que",
-    heroLine2: "sai do experimento",
-    heroLine3: "e gera impacto real.",
+    available: "STATUS / disponível para sistemas difíceis",
+    role: "AI SYSTEMS ENGINEER · GENAI · RAG · AGENTS",
+    heroLine1: "IA que entende contexto.",
+    heroLine2: "Engenharia que aguenta escala.",
+    heroLine3: "Produto que move o negócio.",
     heroCopy:
       "Transformo regras de negócio complexas em sistemas de IA Generativa seguros, escaláveis e prontos para produção — de agentes autônomos e RAG a LLMs open-source com inferência privada.",
     contact: "Vamos conversar",
@@ -37,8 +37,8 @@ const content = {
       ["92%", "de acurácia em classificação de tickets"],
       ["20M+", "tickets processados em escala"],
     ],
-    impactEyebrow: "Impacto selecionado",
-    impactTitle: "Sistemas que entregam além do modelo.",
+    impactEyebrow: "Dossiês de produção",
+    impactTitle: "Três sistemas. Três problemas que não cabiam em uma demo.",
     impactCopy:
       "Projetos desenhados na interseção entre pesquisa aplicada, engenharia de software e resultado de negócio.",
     github: "Explorar GitHub",
@@ -72,7 +72,7 @@ const content = {
       },
     ],
     experienceEyebrow: "Trajetória",
-    experienceTitle: "Da ciência de dados à engenharia de IA.",
+    experienceTitle: "Um histórico de versões, não uma lista de cargos.",
     current: "Atual",
     experiences: [
       {
@@ -105,7 +105,7 @@ const content = {
       },
     ],
     expertiseEyebrow: "Expertise",
-    expertiseTitle: "Profundidade técnica. Visão de produto.",
+    expertiseTitle: "Meu mapa de decisão técnica.",
     expertiseCopy:
       "Uma stack construída para levar IA da prova de conceito à operação, com atenção a custo, privacidade, qualidade e escala.",
     expertise: [
@@ -135,7 +135,7 @@ const content = {
       },
     ],
     aboutEyebrow: "Além do código",
-    aboutTitle: "Engenharia com repertório global.",
+    aboutTitle: "Precisão japonesa. Ritmo global. Engenharia aplicada.",
     aboutCopy:
       "Minha trajetória combina pesquisa aplicada, execução hands-on e comunicação entre tecnologia e negócio. A vivência no Japão e a atuação com times de North America & APAC moldaram uma forma de trabalhar precisa, adaptável e multicultural.",
     recognitionLabel: "Reconhecimento",
@@ -152,7 +152,7 @@ const content = {
     educationTitle: "Ciência da Computação",
     educationCopy: "Universidade Anhembi Morumbi · conclusão prevista para 2027",
     ctaEyebrow: "Pronto para o próximo desafio",
-    ctaTitle: "Vamos construir algo que importe?",
+    ctaTitle: "Tem um problema difícil? Melhor ainda.",
     ctaCopy:
       "Estou aberto a conversar sobre produtos de IA, sistemas generativos e problemas complexos que pedem engenharia de verdade.",
     email: "Enviar um e-mail",
@@ -168,11 +168,11 @@ const content = {
       ["About", "#sobre"],
     ],
     resume: "Download résumé",
-    available: "Open to high-impact opportunities",
-    role: "AI Engineer · GenAI · RAG · AI Agents",
-    heroLine1: "Architecting AI that",
-    heroLine2: "moves beyond the lab",
-    heroLine3: "and creates real impact.",
+    available: "STATUS / available for hard systems",
+    role: "AI SYSTEMS ENGINEER · GENAI · RAG · AGENTS",
+    heroLine1: "AI that understands context.",
+    heroLine2: "Engineering that holds at scale.",
+    heroLine3: "Products that move the business.",
     heroCopy:
       "I turn complex business rules into secure, scalable, production-ready Generative AI systems — from autonomous agents and RAG to open-source LLMs with private inference.",
     contact: "Let's talk",
@@ -191,8 +191,8 @@ const content = {
       ["92%", "accuracy in ticket classification"],
       ["20M+", "tickets processed at scale"],
     ],
-    impactEyebrow: "Selected impact",
-    impactTitle: "Systems that deliver beyond the model.",
+    impactEyebrow: "Production dossiers",
+    impactTitle: "Three systems. Three problems too real for a demo.",
     impactCopy:
       "Work designed at the intersection of applied research, software engineering, and measurable business outcomes.",
     github: "Explore GitHub",
@@ -226,7 +226,7 @@ const content = {
       },
     ],
     experienceEyebrow: "Career",
-    experienceTitle: "From data science to AI engineering.",
+    experienceTitle: "A version history, not a list of titles.",
     current: "Current",
     experiences: [
       {
@@ -259,7 +259,7 @@ const content = {
       },
     ],
     expertiseEyebrow: "Expertise",
-    expertiseTitle: "Technical depth. Product thinking.",
+    expertiseTitle: "My technical decision map.",
     expertiseCopy:
       "A stack built to take AI from proof of concept to production — balancing cost, privacy, quality, and scale.",
     expertise: [
@@ -289,7 +289,7 @@ const content = {
       },
     ],
     aboutEyebrow: "Beyond code",
-    aboutTitle: "Engineering with a global perspective.",
+    aboutTitle: "Japanese precision. Global rhythm. Applied engineering.",
     aboutCopy:
       "My path combines applied research, hands-on execution, and communication across technology and business. Living in Japan and working with North America & APAC teams shaped a precise, adaptable, multicultural way of building.",
     recognitionLabel: "Recognition",
@@ -306,7 +306,7 @@ const content = {
     educationTitle: "B.Sc. in Computer Science",
     educationCopy: "Universidade Anhembi Morumbi · expected graduation in 2027",
     ctaEyebrow: "Ready for the next challenge",
-    ctaTitle: "Let's build something that matters.",
+    ctaTitle: "Got a hard problem? Even better.",
     ctaCopy:
       "I'm open to conversations about AI products, generative systems, and complex problems that demand thoughtful engineering.",
     email: "Send an email",
@@ -328,8 +328,11 @@ export default function Home() {
   }, [language]);
 
   useEffect(() => {
-    const activeTheme = document.documentElement.dataset.theme;
-    if (activeTheme === "light" || activeTheme === "dark") setTheme(activeTheme);
+    const frame = window.requestAnimationFrame(() => {
+      const activeTheme = document.documentElement.dataset.theme;
+      if (activeTheme === "light" || activeTheme === "dark") setTheme(activeTheme);
+    });
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
   useEffect(() => {

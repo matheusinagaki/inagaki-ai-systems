@@ -11,13 +11,13 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase,
     title: "Matheus Inagaki — AI Engineer",
-    description: "AI Engineer especializado em GenAI, RAG, agentes autônomos, LLMs open-source e sistemas de Machine Learning em produção.",
+    description: "AI Systems Engineer especializado em transformar GenAI, RAG, agentes e LLMs open-source em sistemas seguros e prontos para produção.",
     keywords: ["AI Engineer", "Generative AI", "RAG", "LLM", "Machine Learning", "Python", "Microsoft Azure"],
     authors: [{ name: "Matheus Inagaki" }],
     creator: "Matheus Inagaki",
     openGraph: {
       title: "Matheus Inagaki — AI Engineer",
-      description: "Arquitetando sistemas de IA que saem do experimento e geram impacto real.",
+      description: "IA que entende contexto. Engenharia que aguenta escala. Produto que move o negócio.",
       type: "website",
       locale: "pt_BR",
       images: [{ url: "/og.png", width: 1200, height: 630, alt: "Matheus Inagaki — AI Engineer" }],
@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: "Matheus Inagaki — AI Engineer",
-      description: "GenAI · RAG · AI Agents · Open-source LLMs",
+      description: "AI Systems Engineering · GenAI · RAG · Agents · Production",
       images: ["/og.png"],
     },
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
