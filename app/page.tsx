@@ -320,6 +320,7 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [selectedExperience, setSelectedExperience] = useState(0);
   const t = content[language];
 
   useEffect(() => {
@@ -506,10 +507,17 @@ export default function Home() {
               <h2>{t.experienceTitle}</h2>
             </div>
           </div>
-          <div className="timeline">
+          <div className="timeline" role="list">
             {t.experiences.map((item, index) => (
-              <article className="timeline-item reveal" key={`${item.company}-${item.role}`}>
-                <div className="timeline-rail"><span className={index === 0 ? "active" : ""} /></div>
+              <article className={`timeline-item reveal ${selectedExperience === index ? "selected" : ""}`} key={`${item.company}-${item.role}`} role="listitem">
+                <button
+                  className="timeline-hit-area"
+                  type="button"
+                  onClick={() => setSelectedExperience(index)}
+                  aria-pressed={selectedExperience === index}
+                  aria-label={language === "pt" ? `Selecionar experiência: ${item.role}` : `Select experience: ${item.role}`}
+                />
+                <div className="timeline-rail"><span className={selectedExperience === index ? "active" : ""} /></div>
                 <div className="timeline-period">{item.period}{index === 0 && <em>{t.current}</em>}</div>
                 <div className="timeline-content">
                   <p>{item.company}</p><h3>{item.role}</h3><div>{item.copy}</div>
