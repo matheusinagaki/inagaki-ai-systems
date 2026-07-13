@@ -56,6 +56,9 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /setSelectedExperience\(index\)/);
   assert.match(page, /aria-pressed=\{selectedExperience === index\}/);
   assert.match(css, /@media \(max-width: 760px\)/);
+  assert.match(css, /\.header-actions \{ flex: 0 0 auto; width: auto; height: 42px/);
+  assert.match(css, /\.theme-toggle \{ flex: 0 0 42px; width: 42px; height: 42px/);
+  assert.match(css, /\.menu-toggle \{ flex: 0 0 42px; width: 42px; height: 42px/);
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /:root\[data-theme="light"\]/);
   assert.match(css, /--bg: #ded8cc/);

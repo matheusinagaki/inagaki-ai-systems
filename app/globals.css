@@ -275,16 +275,17 @@ footer p { text-align: center; }
 @media (max-width: 760px) {
   :root { --rail: 0px; }
   main { padding-left: 0; }
-  .site-header { inset: 0 0 auto; width: auto; height: 70px; padding: 0 15px; flex-direction: row; justify-content: space-between; border-right: 0; border-bottom: 1px solid var(--line); }
+  .site-header { inset: 0 0 auto; width: auto; height: 70px; padding: 0 15px; flex-direction: row; align-items: center; justify-content: space-between; border-right: 0; border-bottom: 1px solid var(--line); }
   .brand { display: flex; align-items: center; gap: 10px; }
   .brand-mark { width: 39px; height: 39px; }
   .brand-name { display: block; width: auto; text-align: left; }
   .desktop-nav, .resume-link { display: none; }
-  .header-actions { width: auto; margin-top: 0; display: flex; gap: 6px; }
-  .language-switch { width: 66px; }
-  .theme-toggle { width: 38px; min-height: 34px; padding: 0; justify-content: center; }
+  .header-actions { flex: 0 0 auto; width: auto; height: 42px; margin-top: 0; display: flex; align-items: stretch; align-self: center; gap: 6px; }
+  .language-switch { flex: 0 0 82px; width: 82px; height: 42px; }
+  .language-switch button { height: 40px; }
+  .theme-toggle { flex: 0 0 42px; width: 42px; height: 42px; min-height: 42px; padding: 0; justify-content: center; }
   .theme-label { display: none; }
-  .menu-toggle { width: 38px; height: 34px; display: grid; place-content: center; gap: 6px; background: transparent; border: 1px solid var(--line); }
+  .menu-toggle { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-content: center; gap: 6px; background: transparent; border: 1px solid var(--line); }
   .menu-toggle span { width: 16px; height: 1px; background: var(--text); transition: transform .2s; }
   .mobile-nav { position: fixed; inset: 70px 0 0; z-index: 90; padding: 20px; background: var(--bg); transform: translateX(100%); transition: transform .3s ease; }
   .mobile-nav.open { display: grid; transform: translateX(0); }
@@ -343,6 +344,12 @@ footer p { text-align: center; }
   .contact-actions { display: grid; }
   footer { padding: 28px 20px; grid-template-columns: 1fr auto; }
   footer p, .footer-links a:not(:last-child) { display: none; }
+}
+
+@media (max-width: 430px) {
+  .site-header { padding-inline: 12px; }
+  .brand-name { display: none; }
+  .language-switch { flex-basis: 72px; width: 72px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
