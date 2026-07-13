@@ -51,6 +51,9 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /document\.documentElement\.lang/);
   assert.match(page, /localStorage\.setItem\("theme"/);
   assert.match(page, /aria-controls="mobile-navigation"/);
+  assert.match(page, /aria-controls="desktop-navigation"/);
+  assert.match(page, /localStorage\.setItem\("desktop-rail"/);
+  assert.match(page, /desktopRailOpen \? "rail-open" : "rail-collapsed"/);
   assert.match(page, /event\.key === "Escape"/);
   assert.match(page, /selectedExperience === index/);
   assert.match(page, /setSelectedExperience\(index\)/);
@@ -68,6 +71,8 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /\.site-header \{ position: fixed; inset: 0 auto 0 0/);
   assert.match(css, /\.theme-toggle/);
   assert.match(css, /\.mobile-nav\.open/);
+  assert.match(css, /main\.rail-collapsed \{ --rail: 76px; \}/);
+  assert.match(css, /\.rail-collapsed \.desktop-nav/);
   assert.match(css, /\.timeline-item\.selected/);
   assert.match(css, /--accent-secondary:/);
   assert.match(layout, /x-forwarded-host/);

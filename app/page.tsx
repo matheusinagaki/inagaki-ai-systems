@@ -320,6 +320,7 @@ export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [desktopRailOpen, setDesktopRailOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(0);
   const t = content[language];
 
@@ -331,6 +332,7 @@ export default function Home() {
     const frame = window.requestAnimationFrame(() => {
       const activeTheme = document.documentElement.dataset.theme;
       if (activeTheme === "light" || activeTheme === "dark") setTheme(activeTheme);
+      if (localStorage.getItem("desktop-rail") === "open") setDesktopRailOpen(true);
     });
     return () => window.cancelAnimationFrame(frame);
   }, []);
@@ -342,7 +344,10 @@ export default function Home() {
 
   useEffect(() => {
     const closeMenu = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        setDesktopRailOpen(false);
+      }
     };
     window.addEventListener("keydown", closeMenu);
     return () => window.removeEventListener("keydown", closeMenu);
@@ -356,8 +361,14 @@ export default function Home() {
     localStorage.setItem("theme", nextTheme);
   };
 
+  const toggleDesktopRail = () => {
+    const nextState = !desktopRailOpen;
+    setDesktopRailOpen(nextState);
+    localStorage.setItem("desktop-rail", nextState ? "open" : "closed");
+  };
+
   return (
-    <main id="top">
+    <main id="top" className={desktopRailOpen ? "rail-open" : "rail-collapsed"}>
       <a className="skip-link" href="#conteudo">
         {language === "pt" ? "Pular para o conteúdo" : "Skip to content"}
       </a>
@@ -368,7 +379,19 @@ export default function Home() {
           <span className="brand-name">Matheus Inagaki</span>
         </a>
 
-        <nav className="desktop-nav" aria-label={language === "pt" ? "Navegação principal" : "Main navigation"}>
+        <button
+          className="rail-toggle"
+          type="button"
+          onClick={toggleDesktopRail}
+          aria-expanded={desktopRailOpen}
+          aria-controls="desktop-navigation"
+          aria-label={language === "pt" ? `${desktopRailOpen ? "Fechar" : "Abrir"} menu lateral` : `${desktopRailOpen ? "Close" : "Open"} side menu`}
+        >
+          <span className="rail-toggle-icon" aria-hidden="true">{desktopRailOpen ? "←" : "→"}</span>
+          <span className="rail-toggle-label">{language === "pt" ? (desktopRailOpen ? "Recolher" : "Abrir") : (desktopRailOpen ? "Collapse" : "Open")}</span>
+        </button>
+
+        <nav id="desktop-navigation" className="desktop-nav" aria-label={language === "pt" ? "Navegação principal" : "Main navigation"}>
           {t.nav.map(([label, href]) => (
             <a key={href} href={href}>{label}</a>
           ))}
