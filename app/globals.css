@@ -154,16 +154,20 @@ h1 .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent);
 .system-card::before { content: "TRACE::INFERENCE"; left: 12px; top: -4px; }
 .system-card::after { content: "LIVE"; right: 12px; bottom: -4px; color: var(--accent-secondary); }
 .system-topline { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--line); color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .13em; }
-.orbital-system { position: relative; height: 280px; margin: 18px 0; display: grid; place-items: center; background: repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px); overflow: hidden; }
+.orbital-system { position: relative; height: 280px; margin: 18px 0; display: grid; place-items: center; background: repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px); overflow: hidden; cursor: crosshair; }
 .orbital-system::before { content: "CONTEXT\A RETRIEVAL\A REASONING\A OUTPUT"; white-space: pre; position: absolute; left: 10px; top: 10px; color: var(--muted); font: 650 0.75rem/1.8 var(--font-mono), monospace; letter-spacing: .12em; }
 .orbital-system::after { content: none; display: none; }
 .orbit { position: absolute; border: 1px solid var(--line-strong); border-radius: 0; animation: none; }
 .orbit-one { width: 176px; height: 176px; transform: rotate(45deg); }
 .orbit-two { width: 250px; height: 126px; border-style: dashed; }
-.orbit span { position: absolute; width: 9px; height: 9px; left: -5px; top: calc(50% - 5px); background: var(--accent); box-shadow: 0 0 18px var(--accent-soft); animation: trace-x 3.4s ease-in-out infinite; }
-.orbit-two span { left: auto; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--accent-secondary); animation: trace-y 4s ease-in-out infinite; }
-.core-node { position: relative; z-index: 3; width: 82px; height: 82px; display: grid; place-items: center; background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); }
+.orbit span { position: absolute; width: 9px; height: 9px; left: -5px; top: calc(50% - 5px); background: var(--accent); box-shadow: 0 0 18px var(--accent-soft); animation: trace-x 3.4s ease-in-out infinite; transition: all 0.4s ease; }
+.orbit-two span { left: auto; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--accent-secondary); animation: trace-y 4s ease-in-out infinite; transition: all 0.4s ease; }
+.core-node { position: relative; z-index: 3; width: 82px; height: 82px; display: grid; place-items: center; background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .core-node span { font: 900 1.1875rem/1 var(--font-mono), monospace; letter-spacing: -.08em; }
+
+.orbital-system:hover .orbit span { animation-duration: 1.2s; transform: scale(1.4); box-shadow: 0 0 30px var(--accent); }
+.orbital-system:hover .orbit-two span { animation-duration: 1.5s; transform: scale(1.4); box-shadow: 0 0 30px var(--accent-secondary); }
+.orbital-system:hover .core-node { transform: scale(1.05); box-shadow: 16px 16px 0 var(--accent); }
 .system-status { padding: 11px 0; display: flex; align-items: center; gap: 9px; border-block: 1px solid var(--line); color: var(--muted-strong); font: 650 0.75rem/1 var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .1em; }
 .status-pulse { width: 7px; height: 7px; background: var(--accent-secondary); }
 .system-list { counter-reset: systems; }
@@ -174,8 +178,8 @@ h1 .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent);
 .scroll-cue i { display: inline-block; width: 68px; height: 1px; margin-left: 12px; vertical-align: middle; background: var(--accent); }
 
 /* Signal tape */
-.metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid var(--line-strong); background: var(--accent-secondary); color: var(--bg); }
-.metric { min-height: 128px; padding: 20px clamp(16px, 2.4vw, 38px); display: grid; align-content: space-between; border-right: 1px solid var(--line-strong); }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); background: var(--text); color: var(--bg); }
+.metric { min-height: 128px; padding: 20px clamp(16px, 2.4vw, 38px); display: grid; align-content: space-between; border-right: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); }
 .metric:last-child { border-right: 0; }
 .metric strong { font: 720 clamp(35px, 4vw, 62px)/.95 "Segoe UI Variable", sans-serif; letter-spacing: -.06em; }
 .metric span { max-width: 190px; font: 700 0.75rem/1.45 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; }
@@ -348,7 +352,7 @@ footer p { text-align: center; }
   .orbital-system { height: 280px; }
   .scroll-cue { display: none; }
   .metrics { grid-template-columns: 1fr 1fr; }
-  .metric { min-height: 122px; border-bottom: 1px solid var(--line-strong); }
+  .metric { min-height: 122px; border-bottom: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); }
   .section { padding: 92px 20px; }
   .section-heading { grid-template-columns: 1fr; gap: 28px; margin-bottom: 48px; }
   h2 { font-size: 2.8125rem; }
@@ -392,4 +396,29 @@ footer p { text-align: center; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .reveal { animation: none; }
+}
+
+/* Spotlight Hover Effect */
+.spotlight-card {
+  position: relative;
+}
+.spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 0) var(--mouse-y, 0), 
+    color-mix(in srgb, var(--accent) 12%, transparent),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+.spotlight-card:hover .spotlight-overlay {
+  opacity: 1;
+}
+.spotlight-card > *:not(.spotlight-overlay) {
+  position: relative;
+  z-index: 1;
 }

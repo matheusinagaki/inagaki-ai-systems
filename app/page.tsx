@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MagneticButton } from "@/components/ui/magnetic-button";
+import { useDecrypt } from "@/hooks/use-decrypt";
+import { motion, Variants } from "framer-motion";
 
 type Language = "pt" | "en";
 type Theme = "light" | "dark";
@@ -316,13 +319,42 @@ const content = {
   },
 } as const;
 
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+};
+const fadeUpItem: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 20 } }
+};
+
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const cards = document.querySelectorAll('.spotlight-card');
+      cards.forEach((card) => {
+        const rect = (card as HTMLElement).getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
+        (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
+      });
+    };
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [desktopRailOpen, setDesktopRailOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(0);
   const t = content[language];
+  const decryptedLine1 = useDecrypt(t.heroLine1, 35, 100);
+  const decryptedLine2 = useDecrypt(t.heroLine2, 35, 400);
+  const decryptedLine3 = useDecrypt(t.heroLine3, 35, 700);
 
   useEffect(() => {
     document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
@@ -452,18 +484,18 @@ export default function Home() {
               <div className="availability"><span className="availability-dot" />{t.available}</div>
               <p className="hero-role">{t.role}</p>
               <h1 id="hero-title">
-                <span>{t.heroLine1}</span>
-                <span>{t.heroLine2}</span>
-                <span className="accent-line">{t.heroLine3}</span>
+                <span>{decryptedLine1}</span>
+                <span>{decryptedLine2}</span>
+                <span className="accent-line">{decryptedLine3}</span>
               </h1>
               <p className="hero-description">{t.heroCopy}</p>
               <div className="hero-actions">
-                <a className="button button-primary" href="mailto:matheusinagakimoraes97@gmail.com">
+                <MagneticButton><a className="button button-primary" href="mailto:matheusinagakimoraes97@gmail.com">
                   {t.contact}<span aria-hidden="true">↗</span>
-                </a>
-                <a className="button button-secondary" href="#impacto">
+                </a></MagneticButton>
+                <MagneticButton><a className="button button-secondary" href="#impacto">
                   {t.explore}<span aria-hidden="true">↓</span>
-                </a>
+                </a></MagneticButton>
               </div>
             </div>
 
@@ -511,10 +543,10 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="case-list">
+          <motion.div className="case-list" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
             {t.cases.map((item) => (
-              <article className="case-card reveal" key={item.index}>
-                <div className="case-index">/{item.index}</div>
+              <motion.article variants={fadeUpItem} className="case-card spotlight-card reveal" key={item.index}>
+                <div className="spotlight-overlay" /><div className="case-index">/{item.index}</div>
                 <div className="case-main">
                   <div className="case-metric"><strong>{item.metric}</strong><span>{item.metricLabel}</span></div>
                   <h3>{item.title}</h3>
@@ -522,9 +554,9 @@ export default function Home() {
                   <div className="tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                 </div>
                 <span className="case-arrow" aria-hidden="true">↗</span>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section className="section experience-section" id="experiencia">
@@ -560,15 +592,15 @@ export default function Home() {
             <div><p className="eyebrow">{t.expertiseEyebrow}</p><h2>{t.expertiseTitle}</h2></div>
             <div className="section-heading-side"><p>{t.expertiseCopy}</p></div>
           </div>
-          <div className="expertise-grid">
+          <motion.div className="expertise-grid" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
             {t.expertise.map((item) => (
-              <article className="expertise-card reveal" key={item.number}>
-                <div className="expertise-number">{item.number}</div>
+              <motion.article variants={fadeUpItem} className="expertise-card spotlight-card reveal" key={item.number}>
+                <div className="spotlight-overlay" /><div className="expertise-number">{item.number}</div>
                 <h3>{item.title}</h3><p>{item.copy}</p>
                 <div className="skill-list">{item.items.map((skill) => <span key={skill}>{skill}</span>)}</div>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         <section className="section about-section" id="sobre">
@@ -577,24 +609,24 @@ export default function Home() {
             <h2>{t.aboutTitle}</h2>
             <p>{t.aboutCopy}</p>
           </div>
-          <div className="about-grid">
-            <article className="about-card recognition-card reveal">
-              <p className="card-label">{t.recognitionLabel}</p>
+          <motion.div className="about-grid" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
+            <motion.article variants={fadeUpItem} className="about-card spotlight-card recognition-card reveal">
+              <div className="spotlight-overlay" /><p className="card-label">{t.recognitionLabel}</p>
               <div className="award-mark" aria-hidden="true">✦</div>
               <h3>{t.recognitionTitle}</h3><p>{t.recognitionCopy}</p>
-            </article>
-            <article className="about-card reveal">
-              <p className="card-label">{t.languagesLabel}</p>
+            </motion.article>
+            <motion.article variants={fadeUpItem} className="about-card spotlight-card reveal">
+              <div className="spotlight-overlay" /><p className="card-label">{t.languagesLabel}</p>
               <div className="language-list">
                 {t.languages.map(([name, level]) => <div key={name}><strong>{name}</strong><span>{level}</span></div>)}
               </div>
-            </article>
-            <article className="about-card education-card reveal">
-              <p className="card-label">{t.educationLabel}</p>
+            </motion.article>
+            <motion.article variants={fadeUpItem} className="about-card spotlight-card education-card reveal">
+              <div className="spotlight-overlay" /><p className="card-label">{t.educationLabel}</p>
               <div className="education-year">JUN 2027</div>
               <h3>{t.educationTitle}</h3><p>{t.educationCopy}</p>
-            </article>
-          </div>
+            </motion.article>
+          </motion.div>
         </section>
 
         <section className="contact-section" id="contato">
