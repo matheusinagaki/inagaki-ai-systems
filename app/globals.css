@@ -91,8 +91,8 @@ section[id] { scroll-margin-top: 32px; }
 .rail-toggle-icon { font: 700 0.9375rem/1 var(--font-mono), monospace; }
 .rail-toggle-label { font: 750 0.75rem/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; }
 .desktop-nav { counter-reset: nav-item; margin: 64px 0 0; display: flex; flex-direction: column; align-items: stretch; width: 100%; border-top: 1px solid var(--line); }
-.desktop-nav a { counter-increment: nav-item; position: relative; min-height: 54px; padding: 0 16px 0 9px; display: flex; align-items: center; gap: 11px; border-bottom: 1px solid var(--line); color: var(--muted); font: 720 0.75rem/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; transition: padding .2s, background .2s, color .2s; }
-.desktop-nav a::before { content: "0" counter(nav-item); width: 20px; color: var(--accent); font-size: 0.75rem; }
+.desktop-nav a { counter-increment: nav-item; position: relative; min-height: 54px; padding: 0 16px 0 9px; display: flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--line); color: var(--muted); font: 720 0.6875rem/1 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; transition: padding .2s, background .2s, color .2s; overflow: hidden; }
+.desktop-nav a::before { content: "0" counter(nav-item); width: 16px; color: var(--accent); font-size: 0.6875rem; }
 .desktop-nav a::after { content: ""; position: absolute; right: 4px; width: 5px; height: 5px; border: 1px solid var(--line-strong); transform: rotate(45deg); }
 .desktop-nav a:hover { padding-left: 14px; background: var(--accent-soft); color: var(--text); }
 .desktop-nav a:hover::after { border-color: var(--accent); background: var(--accent); }
@@ -297,7 +297,7 @@ footer p { text-align: center; }
   .brand-mark { width: 42px; height: 42px; }
   .brand-name { display: block; font-size: 0.75rem; }
   .desktop-nav { margin-top: 46px; }
-  .desktop-nav a { padding: 0 16px 0 7px; gap: 8px; font-size: 0.75rem; }
+  .desktop-nav a { padding: 0 14px 0 7px; gap: 8px; font-size: 0.65rem; }
   .hero-content { grid-template-columns: 1fr; padding-top: 45px; }
   .hero::after { display: none; }
   .hero-copy { padding-bottom: 0; }
