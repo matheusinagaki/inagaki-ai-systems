@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MagneticButton } from "@/components/ui/magnetic-button";
+import { ChatDrawer } from "@/components/ui/chat-drawer";
 import { useDecrypt } from "@/hooks/use-decrypt";
 import { motion, Variants } from "framer-motion";
 
@@ -651,6 +652,7 @@ export default function Home() {
           <a href="#top">{t.backTop} ↑</a>
         </div>
       </footer>
+      <ChatDrawer />
     </main>
   );
 }

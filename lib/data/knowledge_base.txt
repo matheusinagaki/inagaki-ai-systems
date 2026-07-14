@@ -1,0 +1,39 @@
+MATHEUS VINICIUS INAGAKI MORAES  
+Mogi das Cruzes, São Paulo, Brasil | +55 55 12345-6789 | matheus@exemplo.com  
+LinkedIn: linkedin.com/in/mvinagaki  | GitHub: github.com/exemplo   
+  
+PROFESSIONAL SUMMARY
+ML Engineer with experience in developing generative AI solutions using open-source LLMs, RAG, and multi-agent workflows in Python. Worked on building and integrating AI pipelines, focusing on process automation, document analysis, and model deployment in production using Azure, Docker, and REST APIs. Experienced in distributed data processing, computer vision, and machine learning applications for research and corporate environments. Regional Finalist of the NASA Space Apps Challenge and IBM Call for Code with an environmental analysis project. 
+  
+TECHNICAL SKILLS  
+• Languages and Frameworks: Python, Java, PyTorch, Scikit-Learn, OpenCV, LangChain, Hibernate.   
+• Machine Learning & Generative AI: Open-Source LLMs, RAG, Fine-Tuning, Multi-Agent Workflows, XGBoost, Computer Vision.  
+• Cloud, Data & Infrastructure: Microsoft Azure, Docker, Linux, Apache Spark, Delta Live Tables, SQL Server, REST APIs.   
+• Software Engineering: Object-Oriented Programming (OOP), API development, and system integration.   
+  
+PROFESSIONAL EXPERIENCE 
+Empresa Exemplo | AI Research Scientist | May 2023 – June 2025  
+• Developed pipelines using open-source LLMs to reduce dependency on proprietary APIs and enable local processing of corporate data.
+• Implemented multi-agent workflows in Python/LangChain for automated data analysis and extraction tasks.
+• Developed RAG systems for document analysis in the legal context, reducing manual processing time by 40%.
+• Containerized models with Docker and published REST APIs on Microsoft Azure infrastructure for production model deployment.
+• Documented technical metrics and performance results to support decision-making in AI projects.
+
+Empresa Exemplo | Data Scientist II | September 2021 – July 2023  
+• Automated the processing of unstructured data from support tickets using Apache Spark and Delta Live Tables, structuring them into SQL Server databases to optimize response time and analysis for the customer service team.
+• Automated the deployment of predictive models through REST APIs running on Microsoft Azure infrastructure.
+• Developed computer vision applications using OpenCV for face and object detection.
+• Developed Python web scrapers for automated data collection used in dashboards and internal analyses in Power BI.
+
+Instituto ABC | Data Scientist | April 2021 – January 2022 
+• Developed classification models using neural networks, Random Forest, and XGBoost to predict SARS-CoV-2 infection and patient risk stratification.
+• Performed statistical validation using class balancing techniques (SMOTE), dimensionality reduction (PCA), and cross-validation.
+• Evaluated model performance using ROC/AUC metrics to support clinical analysis.
+  
+EDUCATION  
+• Bachelor's Degree in Computer Science | Universidade Uniesquina III | In Progress – Expected Graduation: Aug/2060.  
+
+AWARDS, COURSES, AND LANGUAGES 
+• Regional Finalist (Latin America): NASA Space Apps Challenge & IBM Call for Code (SpecWater Project). 
+• Relevant Courses: Microsoft Azure Fundamentals Preparatory Course (AZ-900) - Coursera.
+• Languages: English (Advanced/Fluent), Japanese (B2 Level), Portuguese (Native).  
