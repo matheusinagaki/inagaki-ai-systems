@@ -17,23 +17,24 @@ const metadataBase = new URL(
 
 export const metadata: Metadata = {
   metadataBase,
-  title: "Matheus Inagaki — AI Engineer",
-  description: "AI Systems Engineer especializado em transformar GenAI, RAG, agentes e LLMs open-source em sistemas seguros e prontos para produção.",
+  title: "Matheus Inagaki — AI Systems Engineer",
+  description: "Portfolio featuring Generative AI, RAG, agents and production-ready AI systems.",
   keywords: ["AI Engineer", "Generative AI", "RAG", "LLM", "Machine Learning", "Python", "Microsoft Azure"],
   authors: [{ name: "Matheus Inagaki" }],
   creator: "Matheus Inagaki",
   openGraph: {
-    title: "Matheus Inagaki — AI Engineer",
-    description: "IA que entende contexto. Engenharia que aguenta escala. Produto que move o negócio.",
+    title: "Matheus Inagaki — AI Systems Engineer",
+    description: "Portfolio featuring Generative AI, RAG, agents and production-ready AI systems.",
     type: "website",
+    url: "https://inagaki-ai-systems.vercel.app/",
     locale: "pt_BR",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Matheus Inagaki — AI Engineer" }],
+    images: [{ url: "https://inagaki-ai-systems.vercel.app/linkedin-thumbnail.png", width: 1200, height: 627, alt: "Matheus Inagaki — AI Systems Engineer" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Matheus Inagaki — AI Engineer",
-    description: "AI Systems Engineering · GenAI · RAG · Agents · Production",
-    images: ["/og.png"],
+    title: "Matheus Inagaki — AI Systems Engineer",
+    description: "Portfolio featuring Generative AI, RAG, agents and production-ready AI systems.",
+    images: ["https://inagaki-ai-systems.vercel.app/linkedin-thumbnail.png"],
   },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
