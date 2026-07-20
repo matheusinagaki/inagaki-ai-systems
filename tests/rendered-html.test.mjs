@@ -19,7 +19,7 @@ test("keeps the finished portfolio content and professional metadata", async () 
   assert.match(page, /JUN 2027/);
   assert.match(page, /conclusão prevista para junho de 2027/);
   assert.match(page, /decrypt-line-measure/);
-  assert.match(page, /https:\/\/github\.com\/mtsvi-moraes/);
+  assert.match(page, /https:\/\/github\.com\/matheusinagaki/);
   assert.match(page, /https:\/\/linkedin\.com\/in\/matheusinagaki/);
   assert.match(page, /\/Matheus-Inagaki-CV\.pdf/);
   assert.ok(socialImage.size > 0);
@@ -87,10 +87,15 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(route, /isSameOriginRequest/);
   assert.match(route, /maxOutputTokens: CHAT_LIMITS\.outputTokens/);
   assert.match(route, /AbortSignal\.timeout\(25_000\)/);
+  assert.match(route, /verifyChatHistory/);
+  assert.match(route, /guardModelOutput/);
+  assert.match(route, /createGuardedChatResponse/);
   assert.match(chatSecurity, /bodyBytes: 32_000/);
   assert.match(chatSecurity, /messageCharacters: 1_600/);
   assert.match(chatSecurity, /message\.role !== "user" && message\.role !== "assistant"/);
   assert.match(chatSecurity, /if \(role === "assistant"\) continue/);
+  assert.match(chatSecurity, /x-vercel-forwarded-for/);
+  assert.doesNotMatch(chatSecurity, /cf-connecting-ip/);
   assert.match(chatDrawer, /overflow-wrap:anywhere/);
   assert.match(chatDrawer, /role="alert"/);
   assert.match(chatDrawer, /<textarea/);
@@ -98,12 +103,16 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(chatDrawer, /renderMessageText/);
   assert.match(chatDrawer, /event\.key === "Escape"/);
   assert.match(chatDrawer, /aria-label="Fechar assistente"/);
+  assert.match(chatDrawer, /data-testid="chat-invitation"/);
+  assert.match(chatDrawer, /Envie uma mensagem por aqui\./);
+  assert.match(chatDrawer, /setHasOpenedChat\(true\)/);
   assert.match(chatDrawer, /sm:h-\[calc\(100dvh-3rem\)\]/);
   assert.match(chatDrawer, /z-\[310\]/);
   assert.match(route, /linkedin\.com\/in\/matheusinagaki/);
   assert.match(route, /openrouter\.chat\("deepseek\/deepseek-chat"\)/);
   assert.match(proxy, /Content-Security-Policy/);
   assert.match(proxy, /frame-ancestors 'none'/);
+  assert.match(proxy, /script-src-attr 'none'/);
   assert.match(proxy, /X-Content-Type-Options/);
 
   const parsedPackage = JSON.parse(packageJson);

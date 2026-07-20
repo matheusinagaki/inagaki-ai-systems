@@ -1,6 +1,6 @@
 MATHEUS VINICIUS INAGAKI MORAES  
 Mogi das Cruzes, São Paulo, Brasil
-LinkedIn: linkedin.com/in/matheusinagaki | GitHub: github.com/exemplo
+LinkedIn: linkedin.com/in/matheusinagaki | GitHub: github.com/matheusinagaki
   
 PROFESSIONAL SUMMARY
 ML Engineer with experience in developing generative AI solutions using open-source LLMs, RAG, and multi-agent workflows in Python. Worked on building and integrating AI pipelines, focusing on process automation, document analysis, and model deployment in production using Azure, Docker, and REST APIs. Experienced in distributed data processing, computer vision, and machine learning applications for research and corporate environments. Regional Finalist of the NASA Space Apps Challenge and IBM Call for Code with an environmental analysis project. 

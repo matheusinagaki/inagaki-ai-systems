@@ -5,9 +5,12 @@ import { useState, useRef, useEffect, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CHAT_GREETING } from "@/lib/chat-constants";
 
 export function ChatDrawer() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showChatInvitation, setShowChatInvitation] = useState(false);
+  const [hasOpenedChat, setHasOpenedChat] = useState(false);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
   
@@ -16,7 +19,7 @@ export function ChatDrawer() {
       {
         id: "1",
         role: "assistant",
-        parts: [{ type: "text", text: "Olá! Eu sou o assistente de IA treinado no dossiê do Matheus. Como posso te ajudar hoje? Você pode me perguntar sobre a experiência, os projetos ou as habilidades dele." }],
+        parts: [{ type: "text", text: CHAT_GREETING }],
       },
     ],
   });
@@ -51,16 +54,65 @@ export function ChatDrawer() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [isOpen]);
 
+  useEffect(() => {
+    if (hasOpenedChat) return;
+
+    const showTimer = window.setTimeout(() => setShowChatInvitation(true), 1_200);
+    const hideTimer = window.setTimeout(() => setShowChatInvitation(false), 7_200);
+
+    return () => {
+      window.clearTimeout(showTimer);
+      window.clearTimeout(hideTimer);
+    };
+  }, [hasOpenedChat]);
+
+  const openChat = () => {
+    setShowChatInvitation(false);
+    setHasOpenedChat(true);
+    setIsOpen(true);
+  };
+
   return (
     <>
+      <AnimatePresence>
+        {!isOpen && !hasOpenedChat && showChatInvitation && (
+          <motion.button
+            data-testid="chat-invitation"
+            type="button"
+            onClick={openChat}
+            aria-label="Abrir o chat para enviar uma mensagem"
+            className="fixed bottom-8 right-[5.75rem] z-[60] max-w-[calc(100vw-7.25rem)] rounded-xl border border-[var(--accent)] bg-[var(--surface)] px-4 py-3 text-left text-[var(--text)] shadow-[0_12px_32px_rgba(0,0,0,0.38)] transition-colors hover:bg-[var(--grid)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+            initial={{ opacity: 0, x: 10, scale: 0.96 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            exit={{ opacity: 0, x: 8, scale: 0.97 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <span className="block font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
+              Chat online
+            </span>
+            <span id="chat-invitation-text" className="mt-1 block text-sm font-medium leading-snug">
+              Envie uma mensagem por aqui.
+            </span>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-1.5 bottom-4 h-3 w-3 rotate-45 border-r border-t border-[var(--accent)] bg-[var(--surface)]"
+            />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       {/* Trigger Button */}
       <motion.button
-        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--text)] text-[var(--bg)] shadow-lg shadow-[var(--accent)]/20 transition-transform hover:scale-110 active:scale-95"
-        onClick={() => setIsOpen(true)}
+        className={cn(
+          "fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[var(--text)] text-[var(--bg)] shadow-lg shadow-[var(--accent)]/20 transition-transform hover:scale-110 active:scale-95",
+          showChatInvitation && !hasOpenedChat && "ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg)]",
+        )}
+        onClick={openChat}
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.1 }}
         aria-label="Open AI Assistant"
+        aria-describedby={showChatInvitation ? "chat-invitation-text" : undefined}
       >
         <MessageSquare className="h-6 w-6" />
       </motion.button>

@@ -1,7 +1,10 @@
+import { CHAT_GREETING } from "./chat-constants.ts";
+
 const MAX_TRACKED_CLIENTS = 5_000;
 const CLIENT_LIMIT = 12;
 const GLOBAL_LIMIT = 150;
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1_000;
+const SIGNATURE_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
 export const CHAT_LIMITS = {
   bodyBytes: 32_000,
@@ -14,6 +17,7 @@ export const CHAT_LIMITS = {
 export type SafeChatMessage = {
   role: "user" | "assistant";
   content: string;
+  signature?: string;
 };
 
 type RateLimitEntry = {
@@ -62,7 +66,9 @@ export function validateChatPayload(payload: unknown): ChatValidationResult {
     }
 
     if (index === 0 && message.id === "1" && message.role === "assistant") {
-      continue;
+      const greeting = extractTextContent(message, "assistant")?.trim();
+      if (greeting === CHAT_GREETING) continue;
+      return { ok: false, error: "Mensagem inicial inválida." };
     }
 
     if (message.role !== "user" && message.role !== "assistant") {
@@ -92,7 +98,20 @@ export function validateChatPayload(payload: unknown): ChatValidationResult {
       return { ok: false, error: "Sequência de mensagens inválida." };
     }
 
-    messages.push({ role: message.role, content: normalizedContent });
+    if (message.role === "user" && isLikelyPromptInjection(normalizedContent)) {
+      return { ok: false, error: "Não posso atender a esse tipo de solicitação." };
+    }
+
+    let signature: string | undefined;
+    if (message.role === "assistant") {
+      const metadata = isRecord(message.metadata) ? message.metadata : null;
+      signature = typeof metadata?.signature === "string" ? metadata.signature : undefined;
+      if (!signature || !SIGNATURE_PATTERN.test(signature)) {
+        return { ok: false, error: "Histórico da conversa inválido." };
+      }
+    }
+
+    messages.push({ role: message.role, content: normalizedContent, signature });
   }
 
   if (
@@ -106,7 +125,12 @@ export function validateChatPayload(payload: unknown): ChatValidationResult {
   return { ok: true, messages };
 }
 
-export function checkChatRateLimit(request: Request): RateLimitResult {
+export async function checkChatRateLimit(request: Request): Promise<RateLimitResult> {
+  const distributedConfig = getDistributedRateLimitConfig();
+  if (distributedConfig) {
+    return checkDistributedRateLimit(request, distributedConfig);
+  }
+
   const now = Date.now();
   pruneExpiredEntries(now);
 
@@ -122,23 +146,48 @@ export function checkChatRateLimit(request: Request): RateLimitResult {
 
 export function isSameOriginRequest(request: Request): boolean {
   const origin = request.headers.get("origin");
-  if (!origin) return true;
+  if (!origin) return false;
 
   try {
     const originUrl = new URL(origin);
-    const requestUrl = new URL(request.url);
-    if (originUrl.origin === requestUrl.origin) return true;
+    if (originUrl.origin === new URL(request.url).origin) return true;
 
-    const forwardedHost = firstHeaderValue(request.headers.get("x-forwarded-host"));
-    const host = forwardedHost ?? firstHeaderValue(request.headers.get("host"));
+    // Next.js can normalize the internal request URL to localhost in local
+    // development. The Host header still represents the browser-visible host.
+    const host = firstHeaderValue(request.headers.get("host"));
+    if (!host || originUrl.host !== host) return false;
+
     const forwardedProtocol = firstHeaderValue(request.headers.get("x-forwarded-proto"));
-    const protocol = forwardedProtocol ?? requestUrl.protocol.replace(":", "");
-    if (!host || (protocol !== "http" && protocol !== "https")) return false;
-
-    return originUrl.origin === new URL(`${protocol}://${host}`).origin;
+    return !forwardedProtocol || `${forwardedProtocol}:` === originUrl.protocol;
   } catch {
     return false;
   }
+}
+
+export function guardModelOutput(
+  output: string,
+  referenceMaterials: readonly string[],
+): { safe: true; text: string } | { safe: false; text: string } {
+  const text = output.trim().replaceAll("**", "");
+  const normalized = normalizeForSecurityCheck(text);
+  const implementationLeak = [
+    /system prompt/,
+    /hidden instructions?/,
+    /developer message/,
+    /raw reference/,
+    /material de refer[eê]ncia bruto/,
+    /instru[cç][oõ]es (?:ocultas|internas|do sistema)/,
+    /##\s*(?:summary|linkedin profile)/,
+  ].some((pattern) => pattern.test(normalized));
+
+  if (implementationLeak || hasLargeReferenceOverlap(text, referenceMaterials)) {
+    return {
+      safe: false,
+      text: "Não posso fornecer instruções internas nem reproduzir o material de referência. Posso responder perguntas objetivas sobre a experiência profissional do Matheus.",
+    };
+  }
+
+  return { safe: true, text };
 }
 
 function extractTextContent(
@@ -214,14 +263,142 @@ function pruneExpiredEntries(now: number): void {
 }
 
 function getClientIdentifier(request: Request): string {
-  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  const vercelForwarded = firstHeaderValue(request.headers.get("x-vercel-forwarded-for"));
+  const forwarded = firstHeaderValue(request.headers.get("x-forwarded-for"));
   const candidate =
-    request.headers.get("cf-connecting-ip") ??
-    request.headers.get("x-real-ip") ??
+    vercelForwarded ??
     forwarded ??
-    "unknown";
+    `unknown:${request.headers.get("user-agent") ?? "no-user-agent"}`;
 
   return candidate.slice(0, 64);
+}
+
+type DistributedRateLimitConfig = { url: string; token: string };
+
+function getDistributedRateLimitConfig(): DistributedRateLimitConfig | null {
+  const url = process.env.UPSTASH_REDIS_REST_URL ?? process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN ?? process.env.KV_REST_API_TOKEN;
+  return url && token ? { url: url.replace(/\/$/, ""), token } : null;
+}
+
+async function checkDistributedRateLimit(
+  request: Request,
+  config: DistributedRateLimitConfig,
+): Promise<RateLimitResult> {
+  const clientKey = `portfolio-chat:client:${getClientIdentifier(request)}`;
+  const globalKey = "portfolio-chat:global";
+  const script = `
+local clientCount = tonumber(redis.call('GET', KEYS[1]) or '0')
+local globalCount = tonumber(redis.call('GET', KEYS[2]) or '0')
+local window = tonumber(ARGV[1])
+local clientLimit = tonumber(ARGV[2])
+local globalLimit = tonumber(ARGV[3])
+if clientCount >= clientLimit then
+  return {0, clientLimit, 0, redis.call('PTTL', KEYS[1])}
+end
+if globalCount >= globalLimit then
+  return {0, globalLimit, 0, redis.call('PTTL', KEYS[2])}
+end
+clientCount = redis.call('INCR', KEYS[1])
+if clientCount == 1 then redis.call('PEXPIRE', KEYS[1], window) end
+globalCount = redis.call('INCR', KEYS[2])
+if globalCount == 1 then redis.call('PEXPIRE', KEYS[2], window) end
+return {1, clientLimit, clientLimit - clientCount, redis.call('PTTL', KEYS[1])}
+`;
+
+  const response = await fetch(config.url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${config.token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify([
+      "EVAL",
+      script,
+      2,
+      clientKey,
+      globalKey,
+      RATE_LIMIT_WINDOW_MS,
+      CLIENT_LIMIT,
+      GLOBAL_LIMIT,
+    ]),
+    cache: "no-store",
+    signal: AbortSignal.timeout(3_000),
+  });
+
+  if (!response.ok) throw new Error("Distributed rate limiter unavailable");
+  const payload: unknown = await response.json();
+  if (!isRecord(payload) || !Array.isArray(payload.result)) {
+    throw new Error("Invalid distributed rate limiter response");
+  }
+
+  const [allowed, limit, remaining, ttl] = payload.result.map(Number);
+  if (![allowed, limit, remaining, ttl].every(Number.isFinite)) {
+    throw new Error("Invalid distributed rate limiter values");
+  }
+
+  return {
+    allowed: allowed === 1,
+    limit,
+    remaining: Math.max(0, remaining),
+    retryAfterSeconds: Math.max(1, Math.ceil(Math.max(ttl, 1) / 1_000)),
+  };
+}
+
+function isLikelyPromptInjection(value: string): boolean {
+  const normalized = normalizeForSecurityCheck(value);
+  const targetsImplementation = [
+    /system prompt/,
+    /developer (?:message|mode|instructions?)/,
+    /hidden instructions?/,
+    /internal instructions?/,
+    /reference material/,
+    /raw (?:context|prompt|instructions?)/,
+    /prompt (?:do sistema|interno|oculto)/,
+    /instru[cç][oõ]es (?:do sistema|internas|ocultas)/,
+    /material de refer[eê]ncia/,
+    /contexto (?:bruto|interno|oculto)/,
+  ].some((pattern) => pattern.test(normalized));
+  const requestsBypass = [
+    /ignore|disregard|override|bypass|jailbreak/,
+    /ignore|desconsidere|substitua|contorne|burle/,
+    /reveal|show|print|repeat|translate|encode|decode|transcribe/,
+    /revele|mostre|imprima|repita|traduza|codifique|decodifique|transcreva/,
+    /role\s*play|developer mode|modo desenvolvedor|finja que|aja como/,
+  ].some((pattern) => pattern.test(normalized));
+
+  return targetsImplementation && requestsBypass;
+}
+
+function hasLargeReferenceOverlap(output: string, references: readonly string[]): boolean {
+  const outputWords = normalizeForSecurityCheck(output).split(/\s+/).filter(Boolean);
+  if (outputWords.length < 12) return false;
+
+  const outputShingles = new Set<string>();
+  for (let index = 0; index <= outputWords.length - 10; index += 1) {
+    outputShingles.add(outputWords.slice(index, index + 10).join(" "));
+  }
+
+  let matches = 0;
+  for (const reference of references) {
+    const words = normalizeForSecurityCheck(reference).split(/\s+/).filter(Boolean);
+    for (let index = 0; index <= words.length - 10; index += 1) {
+      if (outputShingles.has(words.slice(index, index + 10).join(" "))) {
+        matches += 1;
+        if (matches >= 6) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function normalizeForSecurityCheck(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9#]+/g, " ")
+    .trim();
 }
 
 function firstHeaderValue(value: string | null): string | null {

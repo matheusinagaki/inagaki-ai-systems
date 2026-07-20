@@ -557,7 +557,7 @@ export default function Home() {
             </div>
             <div className="section-heading-side">
               <p>{t.impactCopy}</p>
-              <a className="text-link" href="https://github.com/mtsvi-moraes" target="_blank" rel="noreferrer">{t.github}<span aria-hidden="true">↗</span></a>
+              <a className="text-link" href="https://github.com/matheusinagaki" target="_blank" rel="noreferrer">{t.github}<span aria-hidden="true">↗</span></a>
             </div>
           </div>
 
@@ -664,7 +664,7 @@ export default function Home() {
         <div className="footer-brand"><span className="brand-mark">MI</span><span>© {new Date().getFullYear()} Matheus Inagaki</span></div>
         <p>{t.footer}</p>
         <div className="footer-links">
-          <a href="https://github.com/mtsvi-moraes" target="_blank" rel="noreferrer">GitHub ↗</a>
+          <a href="https://github.com/matheusinagaki" target="_blank" rel="noreferrer">GitHub ↗</a>
           <a href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">LinkedIn ↗</a>
           <a href="#top">{t.backTop} ↑</a>
         </div>
