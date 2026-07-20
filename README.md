@@ -12,19 +12,19 @@ GenAI, RAG, agentes, machine learning e sistemas de IA prontos para produção.
 ## Quick Start
 
 ```bash
-pnpm install
-pnpm dev
-pnpm build
+npm ci
+npm run dev
+npm run build
 ```
 
 O site usa Next.js App Router e está preparado para deploy nativo na Vercel.
 
 ## Useful Commands
 
-- `pnpm dev`: inicia o ambiente local
-- `pnpm build`: valida o build de produção
-- `pnpm test`: executa o build e os testes do portfólio
-- `pnpm lint`: executa as verificações estáticas
+- `npm run dev`: inicia o ambiente local
+- `npm run build`: valida o build de produção
+- `npm test`: executa o build e os testes do portfólio
+- `npm run lint`: executa as verificações estáticas
 
 ## Learn More
 

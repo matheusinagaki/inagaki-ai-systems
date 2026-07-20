@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -9,8 +9,9 @@ import { cn } from "@/lib/utils";
 export function ChatDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   
-  const { messages, sendMessage, status } = useChat({
+  const { messages, sendMessage, status, error, clearError } = useChat({
     messages: [
       {
         id: "1",
@@ -25,8 +26,10 @@ export function ChatDrawer() {
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
+    if (error) clearError();
     sendMessage({ text: input });
     setInput("");
+    if (inputRef.current) inputRef.current.style.height = "auto";
   };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -36,6 +39,17 @@ export function ChatDrawer() {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [isOpen]);
 
   return (
     <>
@@ -56,14 +70,18 @@ export function ChatDrawer() {
         {isOpen && (
           <>
             <motion.div
-              className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 z-[300] bg-black/40 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              className="fixed bottom-0 right-0 top-0 z-[70] flex w-full max-w-md flex-col border-l border-[var(--line)] bg-[var(--bg)] shadow-2xl sm:bottom-6 sm:right-6 sm:top-auto sm:h-[600px] sm:w-[400px] sm:rounded-2xl sm:border"
+              data-testid="chat-panel"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="chat-title"
+              className="fixed bottom-0 right-0 top-0 z-[310] flex w-full max-w-md flex-col overflow-hidden border-l border-[var(--line)] bg-[var(--bg)] shadow-2xl sm:bottom-6 sm:right-6 sm:top-auto sm:h-[calc(100dvh-3rem)] sm:max-h-[600px] sm:w-[400px] sm:rounded-2xl sm:border"
               initial={{ x: "100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
@@ -76,43 +94,53 @@ export function ChatDrawer() {
                     <Bot className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="font-mono text-sm font-bold text-[var(--text)]">SYSTEM_AGENT</h3>
+                    <h3 id="chat-title" className="font-mono text-sm font-bold text-[var(--text)]">SYSTEM_AGENT</h3>
                     <p className="font-mono text-[10px] text-[var(--accent-secondary)]">RAG ONLINE</p>
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={() => setIsOpen(false)}
-                  className="rounded-full p-2 text-[var(--muted-strong)] hover:bg-[var(--grid)] hover:text-[var(--text)]"
+                  aria-label="Fechar assistente"
+                  title="Fechar (Esc)"
+                  className="shrink-0 rounded-full border border-[var(--line-strong)] bg-[var(--grid)] p-2 text-[var(--text)] transition-colors hover:bg-[var(--text)] hover:text-[var(--bg)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-4 font-sans text-sm">
-                <div className="flex flex-col gap-4">
+              <div className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto p-4 font-sans text-sm">
+                <div className="flex min-w-0 flex-col gap-4">
                   {messages.map((m) => (
                     <div
                       key={m.id}
                       className={cn(
-                        "flex w-max max-w-[85%] flex-col gap-2 rounded-2xl px-4 py-3",
+                        "flex min-w-0 w-fit max-w-[85%] flex-col gap-2 overflow-hidden rounded-2xl px-4 py-3",
                         m.role as string === "user"
                           ? "ml-auto bg-[var(--text)] text-[var(--bg)] rounded-tr-sm"
                           : "bg-[var(--grid)] text-[var(--text)] rounded-tl-sm border border-[var(--line)]"
                       )}
                     >
                       {m.parts.map((p, i) => (
-                        <span key={i} className="whitespace-pre-wrap leading-relaxed">
-                          {p.type === "text" ? p.text : ""}
-                        </span>
+                        p.type === "text" ? (
+                          <span key={i} className="min-w-0 max-w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere] leading-relaxed">
+                            {renderMessageText(p.text)}
+                          </span>
+                        ) : null
                       ))}
                     </div>
                   ))}
                   {isLoading && (
-                    <div className="flex w-max max-w-[85%] items-center gap-2 rounded-2xl rounded-tl-sm border border-[var(--line)] bg-[var(--grid)] px-4 py-3 text-[var(--text)]">
+                    <div data-testid="chat-loading" className="flex w-max max-w-[85%] items-center gap-2 rounded-2xl rounded-tl-sm border border-[var(--line)] bg-[var(--grid)] px-4 py-3 text-[var(--text)]">
                       <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--accent)]" />
                       <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--accent)] [animation-delay:0.2s]" />
                       <div className="h-2 w-2 animate-bounce rounded-full bg-[var(--accent)] [animation-delay:0.4s]" />
+                    </div>
+                  )}
+                  {error && (
+                    <div role="alert" className="max-w-[85%] rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400 [overflow-wrap:anywhere]">
+                      Não foi possível concluir a resposta. Tente novamente em alguns instantes.
                     </div>
                   )}
                   <div ref={messagesEndRef} />
@@ -123,19 +151,34 @@ export function ChatDrawer() {
               <div className="border-t border-[var(--line)] p-4">
                 <form
                   onSubmit={handleFormSubmit}
-                  className="relative flex items-center rounded-xl border border-[var(--line-strong)] bg-[var(--bg)] transition-colors focus-within:border-[var(--accent)]"
+                  className="flex items-end gap-2 rounded-xl border border-[var(--line-strong)] bg-[var(--bg)] p-2 transition-colors focus-within:border-[var(--accent)]"
                 >
-                  <input
+                  <textarea
+                    data-testid="chat-input"
+                    ref={inputRef}
+                    rows={1}
                     value={input}
-                    onChange={(e) => setInput(e.target.value)}
+                    onChange={(e) => {
+                      setInput(e.target.value);
+                      e.currentTarget.style.height = "0px";
+                      e.currentTarget.style.height = `${Math.min(e.currentTarget.scrollHeight, 128)}px`;
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                        e.preventDefault();
+                        e.currentTarget.form?.requestSubmit();
+                      }
+                    }}
+                    maxLength={1600}
                     placeholder="Ask the agent anything..."
-                    className="w-full bg-transparent py-3 pl-4 pr-12 text-sm text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
+                    aria-label="Mensagem para o assistente"
+                    className="min-h-10 max-h-32 min-w-0 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-2 text-sm leading-6 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
                     disabled={isLoading}
                   />
                   <button
                     type="submit"
                     disabled={isLoading || !input.trim()}
-                    className="absolute right-2 flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--text)] text-[var(--bg)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                    className="mb-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--text)] text-[var(--bg)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
                   >
                     <Send className="h-4 w-4" />
                   </button>
@@ -150,4 +193,53 @@ export function ChatDrawer() {
       </AnimatePresence>
     </>
   );
+}
+
+function renderMessageText(text: string): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  const linkPattern = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s<]+)/g;
+  let cursor = 0;
+
+  for (const match of text.matchAll(linkPattern)) {
+    const index = match.index ?? 0;
+    if (index > cursor) nodes.push(text.slice(cursor, index));
+
+    const isMarkdownLink = Boolean(match[2]);
+    const rawUrl = match[2] ?? match[3];
+    const trailingPunctuation = isMarkdownLink ? "" : rawUrl.match(/[.,!?;:]+$/)?.[0] ?? "";
+    const urlValue = trailingPunctuation ? rawUrl.slice(0, -trailingPunctuation.length) : rawUrl;
+    const label = match[1] ?? urlValue;
+    const href = safeHttpUrl(urlValue);
+    if (href) {
+      nodes.push(
+        <a
+          data-chat-link="true"
+          key={`${index}-${href}`}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-[var(--accent)] underline decoration-current/40 underline-offset-2 hover:decoration-current"
+        >
+          {label}
+        </a>,
+      );
+      if (trailingPunctuation) nodes.push(trailingPunctuation);
+    } else {
+      nodes.push(match[0]);
+    }
+
+    cursor = index + match[0].length;
+  }
+
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+  return nodes;
+}
+
+function safeHttpUrl(value: string): string | null {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
+  } catch {
+    return null;
+  }
 }

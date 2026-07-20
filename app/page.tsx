@@ -330,6 +330,23 @@ const fadeUpItem: Variants = {
   show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 20 } }
 };
 
+function DecryptLine({
+  text,
+  animatedText,
+  className = "",
+}: {
+  text: string;
+  animatedText: string;
+  className?: string;
+}) {
+  return (
+    <span className={`decrypt-line ${className}`.trim()} aria-hidden="true">
+      <span className="decrypt-line-measure">{text}</span>
+      <span className="decrypt-line-animation">{animatedText}</span>
+    </span>
+  );
+}
+
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
 
@@ -484,10 +501,10 @@ export default function Home() {
             <div className="hero-copy">
               <div className="availability"><span className="availability-dot" />{t.available}</div>
               <p className="hero-role">{t.role}</p>
-              <h1 id="hero-title">
-                <span>{decryptedLine1}</span>
-                <span>{decryptedLine2}</span>
-                <span className="accent-line">{decryptedLine3}</span>
+              <h1 id="hero-title" aria-label={`${t.heroLine1} ${t.heroLine2} ${t.heroLine3}`}>
+                <DecryptLine text={t.heroLine1} animatedText={decryptedLine1} />
+                <DecryptLine text={t.heroLine2} animatedText={decryptedLine2} />
+                <DecryptLine text={t.heroLine3} animatedText={decryptedLine3} className="accent-line" />
               </h1>
               <p className="hero-description">{t.heroCopy}</p>
               <div className="hero-actions">
@@ -637,7 +654,7 @@ export default function Home() {
             <h2>{t.ctaTitle}</h2><p>{t.ctaCopy}</p>
             <div className="contact-actions">
               <a className="button button-light" href="mailto:matheusinagakimoraes97@gmail.com">{t.email}<span aria-hidden="true">↗</span></a>
-              <a className="button button-outline" href="https://linkedin.com/in/mvinagaki" target="_blank" rel="noreferrer">{t.linkedin}<span aria-hidden="true">↗</span></a>
+              <a className="button button-outline" href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">{t.linkedin}<span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </section>
@@ -648,7 +665,7 @@ export default function Home() {
         <p>{t.footer}</p>
         <div className="footer-links">
           <a href="https://github.com/mtsvi-moraes" target="_blank" rel="noreferrer">GitHub ↗</a>
-          <a href="https://linkedin.com/in/mvinagaki" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+          <a href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">LinkedIn ↗</a>
           <a href="#top">{t.backTop} ↑</a>
         </div>
       </footer>
