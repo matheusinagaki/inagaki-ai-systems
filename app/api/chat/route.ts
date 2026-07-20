@@ -12,9 +12,16 @@ import {
   checkChatRateLimit,
   guardModelOutput,
   isSameOriginRequest,
+  readLimitedRequestBody,
   validateChatPayload,
 } from "@/lib/chat-security";
-import { signAssistantResponse, verifyChatHistory } from "@/lib/chat-history";
+import {
+  deriveChatSigningSecret,
+  getOrCreateChatSession,
+  serializeChatSessionCookie,
+  signAssistantResponse,
+  verifyChatHistory,
+} from "@/lib/chat-history";
 
 // Permite a execução serverless e acesso ao file system no Next.js App Router
 export const maxDuration = 60; // 60s timeout para a API
@@ -25,28 +32,14 @@ export async function POST(req: Request) {
       return jsonError("Origem da requisição não permitida.", 403);
     }
 
-    const rateLimit = await checkChatRateLimit(req);
-    if (!rateLimit.allowed) {
-      return jsonError("Limite de mensagens atingido. Tente novamente mais tarde.", 429, {
-        "Retry-After": String(rateLimit.retryAfterSeconds),
-        "X-RateLimit-Limit": String(rateLimit.limit),
-        "X-RateLimit-Remaining": "0",
-      });
-    }
-
-    const declaredLength = Number(req.headers.get("content-length") ?? "0");
-    if (Number.isFinite(declaredLength) && declaredLength > CHAT_LIMITS.bodyBytes) {
-      return jsonError("Requisição muito grande.", 413);
-    }
-
-    const rawBody = await req.text();
-    if (new TextEncoder().encode(rawBody).byteLength > CHAT_LIMITS.bodyBytes) {
+    const requestBody = await readLimitedRequestBody(req);
+    if (!requestBody.ok) {
       return jsonError("Requisição muito grande.", 413);
     }
 
     let payload: unknown;
     try {
-      payload = JSON.parse(rawBody);
+      payload = JSON.parse(requestBody.text);
     } catch {
       return jsonError("JSON inválido.", 400);
     }
@@ -60,9 +53,22 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return jsonError("Assistente temporariamente indisponível.", 503);
     }
-    const signingSecret = process.env.CHAT_SIGNING_SECRET ?? apiKey;
-    if (!verifyChatHistory(validation.messages, signingSecret)) {
+    const signingSecret =
+      process.env.CHAT_SIGNING_SECRET ?? deriveChatSigningSecret(apiKey);
+    const chatSession = getOrCreateChatSession(req.headers.get("cookie"));
+    if (!verifyChatHistory(validation.messages, signingSecret, chatSession.id)) {
       return jsonError("Histórico da conversa inválido.", 400);
+    }
+
+    // Only authenticated, structurally valid conversations consume the shared
+    // generation allowance. Malformed requests cannot exhaust it for everyone.
+    const rateLimit = await checkChatRateLimit(req);
+    if (!rateLimit.allowed) {
+      return jsonError("Limite de mensagens atingido. Tente novamente mais tarde.", 429, {
+        "Retry-After": String(rateLimit.retryAfterSeconds),
+        "X-RateLimit-Limit": String(rateLimit.limit),
+        "X-RateLimit-Remaining": "0",
+      });
     }
 
     const openrouter = createOpenAI({
@@ -118,17 +124,26 @@ ${knowledgeBase}
     });
 
     const guardedOutput = guardModelOutput(result.text, [summary, knowledgeBase]);
-    const signature = signAssistantResponse(
+    const metadata = signAssistantResponse(
       validation.messages,
       guardedOutput.text,
       signingSecret,
+      chatSession.id,
     );
 
-    return createGuardedChatResponse(guardedOutput.text, signature, {
+    return createGuardedChatResponse(guardedOutput.text, metadata, {
       "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff",
       "X-RateLimit-Limit": String(rateLimit.limit),
       "X-RateLimit-Remaining": String(rateLimit.remaining),
+      ...(chatSession.isNew
+        ? {
+            "Set-Cookie": serializeChatSessionCookie(
+              chatSession.id,
+              new URL(req.url).protocol === "https:",
+            ),
+          }
+        : {}),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Erro desconhecido";
@@ -137,15 +152,14 @@ ${knowledgeBase}
   }
 }
 
-type ChatMessageMetadata = { signature: string };
+type ChatMessageMetadata = { signature: string; issuedAt: number };
 
 function createGuardedChatResponse(
   text: string,
-  signature: string,
+  metadata: ChatMessageMetadata,
   headers: Record<string, string>,
 ): Response {
   const textPartId = crypto.randomUUID();
-  const metadata: ChatMessageMetadata = { signature };
   const stream = createUIMessageStream<UIMessage<ChatMessageMetadata>>({
     execute: ({ writer }) => {
       writer.write({ type: "start", messageMetadata: metadata });

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CHAT_GREETING } from "@/lib/chat-constants";
+import { safePublicProfileUrl } from "@/lib/chat-links";
 
 export function ChatDrawer() {
   const [isOpen, setIsOpen] = useState(false);
@@ -261,7 +262,7 @@ function renderMessageText(text: string): ReactNode[] {
     const trailingPunctuation = isMarkdownLink ? "" : rawUrl.match(/[.,!?;:]+$/)?.[0] ?? "";
     const urlValue = trailingPunctuation ? rawUrl.slice(0, -trailingPunctuation.length) : rawUrl;
     const label = match[1] ?? urlValue;
-    const href = safeHttpUrl(urlValue);
+    const href = safePublicProfileUrl(urlValue);
     if (href) {
       nodes.push(
         <a
@@ -285,13 +286,4 @@ function renderMessageText(text: string): ReactNode[] {
 
   if (cursor < text.length) nodes.push(text.slice(cursor));
   return nodes;
-}
-
-function safeHttpUrl(value: string): string | null {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" || url.protocol === "http:" ? url.href : null;
-  } catch {
-    return null;
-  }
 }

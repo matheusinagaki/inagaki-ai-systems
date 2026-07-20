@@ -1,4 +1,6 @@
+import { createHash } from "node:crypto";
 import { CHAT_GREETING } from "./chat-constants.ts";
+import { safePublicProfileUrl } from "./chat-links.ts";
 
 const MAX_TRACKED_CLIENTS = 5_000;
 const CLIENT_LIMIT = 12;
@@ -18,6 +20,7 @@ export type SafeChatMessage = {
   role: "user" | "assistant";
   content: string;
   signature?: string;
+  issuedAt?: number;
 };
 
 type RateLimitEntry = {
@@ -103,15 +106,21 @@ export function validateChatPayload(payload: unknown): ChatValidationResult {
     }
 
     let signature: string | undefined;
+    let issuedAt: number | undefined;
     if (message.role === "assistant") {
       const metadata = isRecord(message.metadata) ? message.metadata : null;
       signature = typeof metadata?.signature === "string" ? metadata.signature : undefined;
-      if (!signature || !SIGNATURE_PATTERN.test(signature)) {
+      issuedAt = typeof metadata?.issuedAt === "number" ? metadata.issuedAt : undefined;
+      if (
+        !signature ||
+        !SIGNATURE_PATTERN.test(signature) ||
+        !Number.isSafeInteger(issuedAt)
+      ) {
         return { ok: false, error: "Histórico da conversa inválido." };
       }
     }
 
-    messages.push({ role: message.role, content: normalizedContent, signature });
+    messages.push({ role: message.role, content: normalizedContent, signature, issuedAt });
   }
 
   if (
@@ -144,6 +153,49 @@ export async function checkChatRateLimit(request: Request): Promise<RateLimitRes
   return clientResult;
 }
 
+export async function readLimitedRequestBody(
+  request: Request,
+  maximumBytes = CHAT_LIMITS.bodyBytes,
+): Promise<{ ok: true; text: string } | { ok: false }> {
+  const declaredLength = Number(request.headers.get("content-length") ?? "0");
+  if (
+    Number.isFinite(declaredLength) &&
+    declaredLength >= 0 &&
+    declaredLength > maximumBytes
+  ) {
+    return { ok: false };
+  }
+
+  const reader = request.body?.getReader();
+  if (!reader) return { ok: true, text: "" };
+
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      totalBytes += value.byteLength;
+      if (totalBytes > maximumBytes) {
+        await reader.cancel("Request body exceeds the configured limit");
+        return { ok: false };
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const body = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    body.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  return { ok: true, text: new TextDecoder().decode(body) };
+}
+
 export function isSameOriginRequest(request: Request): boolean {
   const origin = request.headers.get("origin");
   if (!origin) return false;
@@ -170,6 +222,7 @@ export function guardModelOutput(
 ): { safe: true; text: string } | { safe: false; text: string } {
   const text = output.trim().replaceAll("**", "");
   const normalized = normalizeForSecurityCheck(text);
+  const compact = normalized.replaceAll(" ", "");
   const implementationLeak = [
     /system prompt/,
     /hidden instructions?/,
@@ -178,9 +231,30 @@ export function guardModelOutput(
     /material de refer[eê]ncia bruto/,
     /instru[cç][oõ]es (?:ocultas|internas|do sistema)/,
     /##\s*(?:summary|linkedin profile)/,
-  ].some((pattern) => pattern.test(normalized));
+  ].some((pattern) => pattern.test(normalized)) || [
+    "systemprompt",
+    "hiddeninstructions",
+    "developermessage",
+    "rawreference",
+    "materialdereferenciabruto",
+    "instrucoesinternas",
+    "instrucoesocultas",
+  ].some((term) => compact.includes(term));
 
-  if (implementationLeak || hasLargeReferenceOverlap(text, referenceMaterials)) {
+  const encodedLeak =
+    /[A-Za-z0-9+/_-]{48,}={0,2}/.test(text) ||
+    /(?:[0-9a-fA-F]{2}){32,}/.test(text) ||
+    /(?:%[0-9a-fA-F]{2}){20,}/.test(text);
+  const unauthorizedUrl = Array.from(text.matchAll(/https?:\/\/[^\s<>()\]]+/gi)).some(
+    ([url]) => !safePublicProfileUrl(url.replace(/[.,!?;:]+$/, "")),
+  );
+
+  if (
+    implementationLeak ||
+    encodedLeak ||
+    unauthorizedUrl ||
+    hasLargeReferenceOverlap(text, referenceMaterials)
+  ) {
     return {
       safe: false,
       text: "Não posso fornecer instruções internas nem reproduzir o material de referência. Posso responder perguntas objetivas sobre a experiência profissional do Matheus.",
@@ -263,14 +337,18 @@ function pruneExpiredEntries(now: number): void {
 }
 
 function getClientIdentifier(request: Request): string {
-  const vercelForwarded = firstHeaderValue(request.headers.get("x-vercel-forwarded-for"));
-  const forwarded = firstHeaderValue(request.headers.get("x-forwarded-for"));
+  const vercelForwarded = process.env.VERCEL
+    ? firstHeaderValue(request.headers.get("x-vercel-forwarded-for"))
+    : null;
+  const forwarded = process.env.TRUST_PROXY_HEADERS === "true"
+    ? firstHeaderValue(request.headers.get("x-forwarded-for"))
+    : null;
   const candidate =
     vercelForwarded ??
     forwarded ??
     `unknown:${request.headers.get("user-agent") ?? "no-user-agent"}`;
 
-  return candidate.slice(0, 64);
+  return createHash("sha256").update(candidate.slice(0, 256)).digest("base64url");
 }
 
 type DistributedRateLimitConfig = { url: string; token: string };
@@ -347,6 +425,7 @@ return {1, clientLimit, clientLimit - clientCount, redis.call('PTTL', KEYS[1])}
 
 function isLikelyPromptInjection(value: string): boolean {
   const normalized = normalizeForSecurityCheck(value);
+  const compact = normalized.replaceAll(" ", "");
   const targetsImplementation = [
     /system prompt/,
     /developer (?:message|mode|instructions?)/,
@@ -358,14 +437,55 @@ function isLikelyPromptInjection(value: string): boolean {
     /instru[cç][oõ]es (?:do sistema|internas|ocultas)/,
     /material de refer[eê]ncia/,
     /contexto (?:bruto|interno|oculto)/,
-  ].some((pattern) => pattern.test(normalized));
+  ].some((pattern) => pattern.test(normalized)) || [
+    "systemprompt",
+    "developermessage",
+    "developerinstructions",
+    "hiddeninstructions",
+    "internalinstructions",
+    "referencematerial",
+    "rawcontext",
+    "rawprompt",
+    "promptdosistema",
+    "promptinterno",
+    "promptoculto",
+    "instrucoesdosistema",
+    "instrucoesinternas",
+    "instrucoesocultas",
+    "materialdereferencia",
+    "contextobruto",
+    "contextointerno",
+    "contextooculto",
+  ].some((term) => compact.includes(term));
   const requestsBypass = [
     /ignore|disregard|override|bypass|jailbreak/,
     /ignore|desconsidere|substitua|contorne|burle/,
     /reveal|show|print|repeat|translate|encode|decode|transcribe/,
     /revele|mostre|imprima|repita|traduza|codifique|decodifique|transcreva/,
     /role\s*play|developer mode|modo desenvolvedor|finja que|aja como/,
-  ].some((pattern) => pattern.test(normalized));
+  ].some((pattern) => pattern.test(normalized)) || [
+    "ignorepreviousinstructions",
+    "disregardpreviousinstructions",
+    "mododesenvolvedor",
+    "developermode",
+    "finjaque",
+    "ajacomo",
+    "roleplay",
+    "revele",
+    "mostre",
+    "imprima",
+    "repita",
+    "traduza",
+    "codifique",
+    "decodifique",
+    "transcreva",
+    "reveal",
+    "print",
+    "repeat",
+    "translate",
+    "encode",
+    "decode",
+  ].some((term) => compact.includes(term));
 
   return targetsImplementation && requestsBypass;
 }
@@ -396,6 +516,7 @@ function normalizeForSecurityCheck(value: string): string {
   return value
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\p{Cf}\p{Cc}]/gu, "")
     .toLowerCase()
     .replace(/[^a-z0-9#]+/g, " ")
     .trim();

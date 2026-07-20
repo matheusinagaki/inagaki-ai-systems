@@ -88,7 +88,10 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(route, /maxOutputTokens: CHAT_LIMITS\.outputTokens/);
   assert.match(route, /AbortSignal\.timeout\(25_000\)/);
   assert.match(route, /verifyChatHistory/);
+  assert.match(route, /getOrCreateChatSession/);
+  assert.match(route, /serializeChatSessionCookie/);
   assert.match(route, /guardModelOutput/);
+  assert.match(route, /readLimitedRequestBody/);
   assert.match(route, /createGuardedChatResponse/);
   assert.match(chatSecurity, /bodyBytes: 32_000/);
   assert.match(chatSecurity, /messageCharacters: 1_600/);
@@ -101,6 +104,7 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(chatDrawer, /<textarea/);
   assert.match(chatDrawer, /requestSubmit/);
   assert.match(chatDrawer, /renderMessageText/);
+  assert.match(chatDrawer, /safePublicProfileUrl/);
   assert.match(chatDrawer, /event\.key === "Escape"/);
   assert.match(chatDrawer, /aria-label="Fechar assistente"/);
   assert.match(chatDrawer, /data-testid="chat-invitation"/);
