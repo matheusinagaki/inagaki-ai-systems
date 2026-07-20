@@ -42,6 +42,13 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /aria-controls="desktop-navigation"/);
   assert.match(page, /localStorage\.setItem\("desktop-rail"/);
   assert.match(page, /desktopRailOpen \? "rail-open" : "rail-collapsed"/);
+  assert.match(page, /progressSectionIds/);
+  assert.match(page, /section-progress/);
+  assert.match(page, /--scroll-progress/);
+  assert.match(page, /section-progress-marker/);
+  assert.match(page, /section-progress-count/);
+  assert.match(page, /href={`#\${sectionId}`}/);
+  assert.match(page, /aria-label={progressSectionLabels\[language\]\[sectionId\]}/);
   assert.match(page, /event\.key === "Escape"/);
   assert.match(page, /selectedExperience === index/);
   assert.match(page, /setSelectedExperience\(index\)/);
@@ -64,6 +71,13 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /\.rail-collapsed \.rail-toggle \{ width: 48px;/);
   assert.match(css, /\.language-switch:hover, \.language-switch:focus-within, \.theme-toggle:hover, \.menu-toggle:hover/);
   assert.match(css, /\.rail-collapsed \.desktop-nav/);
+  assert.match(css, /\.section-progress-fill/);
+  assert.match(css, /scaleY\(var\(--scroll-progress\)\)/);
+  assert.match(css, /scaleX\(var\(--scroll-progress\)\)/);
+  assert.match(css, /\.orbit-one span \{ animation-duration: 6\.8s !important; animation-iteration-count: infinite !important; \}/);
+  assert.match(css, /\.orbit-two span \{ animation-duration: 8s !important; animation-iteration-count: infinite !important; \}/);
+  assert.match(css, /\.orbital-system:hover \.orbit-one span \{ animation-duration: 1\.2s !important; \}/);
+  assert.match(css, /\.orbital-system:hover \.orbit-two span \{ animation-duration: 1\.5s !important; \}/);
   assert.match(css, /\.timeline-item\.selected/);
   assert.match(css, /--accent-secondary:/);
   assert.match(layout, /VERCEL_PROJECT_PRODUCTION_URL/);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { ChatDrawer } from "@/components/ui/chat-drawer";
 import { useDecrypt } from "@/hooks/use-decrypt";
@@ -8,6 +8,37 @@ import { motion, Variants } from "framer-motion";
 
 type Language = "pt" | "en";
 type Theme = "light" | "dark";
+
+const progressSectionIds = [
+  "top",
+  "metricas",
+  "impacto",
+  "experiencia",
+  "expertise",
+  "sobre",
+  "contato",
+] as const;
+
+const progressSectionLabels: Record<Language, Record<(typeof progressSectionIds)[number], string>> = {
+  pt: {
+    top: "Início",
+    metricas: "Resultados",
+    impacto: "Impacto",
+    experiencia: "Experiência",
+    expertise: "Expertise",
+    sobre: "Sobre",
+    contato: "Contato",
+  },
+  en: {
+    top: "Home",
+    metricas: "Results",
+    impacto: "Impact",
+    experiencia: "Experience",
+    expertise: "Expertise",
+    sobre: "About",
+    contato: "Contact",
+  },
+};
 
 const content = {
   pt: {
@@ -369,7 +400,10 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [desktopRailOpen, setDesktopRailOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState(0);
+  const [activeSection, setActiveSection] = useState<(typeof progressSectionIds)[number]>("top");
+  const [scrollProgress, setScrollProgress] = useState(0);
   const t = content[language];
+  const activeSectionIndex = progressSectionIds.indexOf(activeSection);
   const decryptedLine1 = useDecrypt(t.heroLine1, 35, 100);
   const decryptedLine2 = useDecrypt(t.heroLine2, 35, 400);
   const decryptedLine3 = useDecrypt(t.heroLine3, 35, 700);
@@ -391,6 +425,47 @@ export default function Home() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+
+  useEffect(() => {
+    let animationFrame = 0;
+
+    const updateProgress = () => {
+      animationFrame = 0;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const nextProgress = documentHeight > 0
+        ? Math.min(1, Math.max(0, window.scrollY / documentHeight))
+        : 0;
+      setScrollProgress((current) =>
+        Math.abs(current - nextProgress) > 0.001 ? nextProgress : current,
+      );
+
+      const activationLine = window.innerHeight * 0.38;
+      let nextSection: (typeof progressSectionIds)[number] = "top";
+      for (const sectionId of progressSectionIds) {
+        const section = document.getElementById(sectionId);
+        if (section && section.getBoundingClientRect().top <= activationLine) {
+          nextSection = sectionId;
+        }
+      }
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+        nextSection = "contato";
+      }
+      setActiveSection((current) => current === nextSection ? current : nextSection);
+    };
+
+    const scheduleUpdate = () => {
+      if (!animationFrame) animationFrame = window.requestAnimationFrame(updateProgress);
+    };
+
+    scheduleUpdate();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
 
   useEffect(() => {
     const closeMenu = (event: KeyboardEvent) => {
@@ -444,7 +519,39 @@ export default function Home() {
 
         <nav id="desktop-navigation" className="desktop-nav" aria-label={language === "pt" ? "Navegação principal" : "Main navigation"}>
           {t.nav.map(([label, href]) => (
-            <a key={href} href={href}>{label}</a>
+            <a
+              key={href}
+              href={href}
+              className={activeSection === href.slice(1) ? "active" : undefined}
+              aria-current={activeSection === href.slice(1) ? "location" : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        <nav
+          className="section-progress"
+          aria-label={language === "pt" ? "Navegação por seções" : "Section navigation"}
+          style={{ "--scroll-progress": scrollProgress } as CSSProperties}
+        >
+          <span className="section-progress-count" aria-hidden="true">
+            {String(activeSectionIndex + 1).padStart(2, "0")}/{String(progressSectionIds.length).padStart(2, "0")}
+          </span>
+          <span className="section-progress-track" aria-hidden="true">
+            <span className="section-progress-fill" />
+          </span>
+          {progressSectionIds.map((sectionId, index) => (
+            <a
+              key={sectionId}
+              href={`#${sectionId}`}
+              className={`section-progress-marker ${sectionId === activeSection ? "active" : ""} ${index < activeSectionIndex ? "complete" : ""}`.trim()}
+              style={{ "--section-position": index / (progressSectionIds.length - 1) } as CSSProperties}
+              aria-label={progressSectionLabels[language][sectionId]}
+              aria-current={sectionId === activeSection ? "location" : undefined}
+            >
+              <span className="section-progress-dot" aria-hidden="true" />
+            </a>
           ))}
         </nav>
 
