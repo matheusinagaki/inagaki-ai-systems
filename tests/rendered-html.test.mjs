@@ -121,4 +121,8 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.equal(parsedPackage.devDependencies.vercel, undefined);
   assert.doesNotMatch(knowledgeBase, /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
   assert.doesNotMatch(knowledgeBase, /(?<!\d)(?:\+?\d[\d\s().-]{7,}\d)(?!\d)/);
+  assert.doesNotMatch(knowledgeBase, /Empresa Exemplo|Instituto ABC|Uniesquina|2060/);
+  assert.match(knowledgeBase, /Grupo Stefanini/);
+  assert.match(knowledgeBase, /Instituto Butantan/);
+  assert.match(knowledgeBase, /Universidade Anhembi Morumbi/);
 });
