@@ -548,6 +548,7 @@ export default function Home() {
               className={`section-progress-marker ${sectionId === activeSection ? "active" : ""} ${index < activeSectionIndex ? "complete" : ""}`.trim()}
               style={{ "--section-position": index / (progressSectionIds.length - 1) } as CSSProperties}
               aria-label={progressSectionLabels[language][sectionId]}
+              data-label={progressSectionLabels[language][sectionId]}
               aria-current={sectionId === activeSection ? "location" : undefined}
             >
               <span className="section-progress-dot" aria-hidden="true" />
@@ -595,7 +596,7 @@ export default function Home() {
           ))}
           <div className="mobile-nav-actions">
             <a href="/Matheus-Inagaki-CV.pdf" download onClick={() => setMenuOpen(false)}>{t.resume}<span aria-hidden="true">↓</span></a>
-            <a href="mailto:matheusinagakimoraes97@gmail.com" onClick={() => setMenuOpen(false)}>{t.contact}<span aria-hidden="true">↗</span></a>
+            <a href="mailto:matheusv.inagaki@gmail.com" onClick={() => setMenuOpen(false)}>{t.contact}<span aria-hidden="true">↗</span></a>
           </div>
         </div>
       </nav>
@@ -615,7 +616,7 @@ export default function Home() {
               </h1>
               <p className="hero-description">{t.heroCopy}</p>
               <div className="hero-actions">
-                <MagneticButton><a className="button button-primary" href="mailto:matheusinagakimoraes97@gmail.com">
+                <MagneticButton><a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
                   {t.contact}<span aria-hidden="true">↗</span>
                 </a></MagneticButton>
                 <MagneticButton><a className="button button-secondary" href="#impacto">
@@ -760,7 +761,7 @@ export default function Home() {
             <p className="eyebrow">{t.ctaEyebrow}</p>
             <h2>{t.ctaTitle}</h2><p>{t.ctaCopy}</p>
             <div className="contact-actions">
-              <a className="button button-light" href="mailto:matheusinagakimoraes97@gmail.com">{t.email}<span aria-hidden="true">↗</span></a>
+              <a className="button button-light" href="mailto:matheusv.inagaki@gmail.com">{t.email}<span aria-hidden="true">↗</span></a>
               <a className="button button-outline" href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">{t.linkedin}<span aria-hidden="true">↗</span></a>
             </div>
           </div>

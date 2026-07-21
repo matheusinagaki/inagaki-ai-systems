@@ -21,6 +21,8 @@ test("keeps the finished portfolio content and professional metadata", async () 
   assert.match(page, /decrypt-line-measure/);
   assert.match(page, /https:\/\/github\.com\/matheusinagaki/);
   assert.match(page, /https:\/\/linkedin\.com\/in\/matheusinagaki/);
+  assert.match(page, /mailto:matheusv\.inagaki@gmail\.com/);
+  assert.doesNotMatch(page, /matheusinagakimoraes97@gmail\.com/);
   assert.match(page, /\/Matheus-Inagaki-CV\.pdf/);
   assert.ok(socialImage.size > 0);
   assert.doesNotMatch(page, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
@@ -49,6 +51,7 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /section-progress-count/);
   assert.match(page, /href={`#\${sectionId}`}/);
   assert.match(page, /aria-label={progressSectionLabels\[language\]\[sectionId\]}/);
+  assert.match(page, /data-label={progressSectionLabels\[language\]\[sectionId\]}/);
   assert.match(page, /event\.key === "Escape"/);
   assert.match(page, /selectedExperience === index/);
   assert.match(page, /setSelectedExperience\(index\)/);
@@ -72,6 +75,8 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /\.language-switch:hover, \.language-switch:focus-within, \.theme-toggle:hover, \.menu-toggle:hover/);
   assert.match(css, /\.rail-collapsed \.desktop-nav/);
   assert.match(css, /\.section-progress-fill/);
+  assert.match(css, /\.section-progress-marker::after \{ content: attr\(data-label\)/);
+  assert.match(css, /\.section-progress-marker:hover::after, \.section-progress-marker:focus-visible::after/);
   assert.match(css, /scaleY\(var\(--scroll-progress\)\)/);
   assert.match(css, /scaleX\(var\(--scroll-progress\)\)/);
   assert.match(css, /\.orbit-one span \{ animation-duration: 6\.8s !important; animation-iteration-count: infinite !important; \}/);
