@@ -38,7 +38,12 @@ export const metadata: Metadata = {
     images: ["https://inagaki-ai-systems.vercel.app/linkedin-thumbnail.png"],
   },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  alternates: {
+    canonical: "https://inagaki-ai-systems.vercel.app/",
+  },
 };
+
+import { Providers } from "@/components/providers";
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
@@ -53,7 +58,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           dangerouslySetInnerHTML={{ __html: themeScript }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
