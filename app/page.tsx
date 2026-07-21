@@ -43,10 +43,13 @@ const progressSectionLabels: Record<Language, Record<(typeof progressSectionIds)
 const content = {
   pt: {
     nav: [
+      ["Início", "#top"],
+      ["Resultados", "#metricas"],
       ["Impacto", "#impacto"],
       ["Experiência", "#experiencia"],
       ["Expertise", "#expertise"],
       ["Sobre", "#sobre"],
+      ["Contato", "#contato"],
     ],
     resume: "Baixar CV",
     available: "STATUS / disponível para sistemas difíceis",
@@ -197,10 +200,13 @@ const content = {
   },
   en: {
     nav: [
+      ["Home", "#top"],
+      ["Results", "#metricas"],
       ["Impact", "#impacto"],
       ["Experience", "#experiencia"],
       ["Expertise", "#expertise"],
       ["About", "#sobre"],
+      ["Contact", "#contato"],
     ],
     resume: "Download résumé",
     available: "STATUS / available for hard systems",

@@ -100,11 +100,11 @@ section[id] { scroll-margin-top: 32px; }
 .desktop-nav a.active::after { border-color: var(--accent); background: var(--accent); }
 .section-progress { --scroll-progress: 0; position: absolute; top: 158px; left: 0; bottom: 164px; width: var(--rail); z-index: 2; pointer-events: none; transition: opacity .18s ease, visibility .18s ease; }
 .section-progress-count { position: absolute; top: -27px; left: 0; width: 100%; color: var(--muted); text-align: center; font: 750 .5625rem/1 var(--font-mono), monospace; letter-spacing: .08em; }
-.section-progress-track { position: absolute; inset: 0 auto 0 50%; width: 2px; background: color-mix(in srgb, var(--line-strong) 78%, var(--text) 22%); overflow: hidden; transform: translateX(-50%); }
+.section-progress-track { position: absolute; inset: 0 auto 0 50%; width: 2px; background: var(--muted); overflow: hidden; transform: translateX(-50%); }
 .section-progress-fill { position: absolute; inset: 0; background: var(--accent); transform: scaleY(var(--scroll-progress)); transform-origin: top; transition: transform .12s linear; }
 .section-progress-marker { --section-position: 0; position: absolute; top: calc(var(--section-position) * 100%); left: 50%; width: 24px; height: 24px; display: grid; place-items: center; transform: translate(-50%, -50%); pointer-events: auto; cursor: pointer; }
-.section-progress-marker::after { content: attr(data-label); position: absolute; z-index: 6; top: 50%; left: calc(100% + 8px); padding: 6px 8px; border: 1px solid var(--line-strong); background: color-mix(in srgb, var(--header) 96%, transparent); box-shadow: 4px 4px 0 var(--accent-soft); color: var(--text); font: 750 .5625rem/1 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; opacity: 0; visibility: hidden; transform: translate(-4px, -50%); transition: opacity .16s ease, visibility .16s ease, transform .16s ease; pointer-events: none; }
-.section-progress-dot { width: 7px; height: 7px; border: 1px solid color-mix(in srgb, var(--line-strong) 72%, var(--text) 28%); border-radius: 50%; background: var(--header); opacity: 1; transition: width .18s ease, height .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+.section-progress-marker::after { content: attr(data-label); position: absolute; z-index: 6; top: 50%; left: calc(100% + 8px); padding: 6px 8px; border: 1px solid var(--line-strong); background: var(--header); box-shadow: 4px 4px 0 var(--accent-soft); color: var(--text); font: 750 .5625rem/1 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; opacity: 0; visibility: hidden; transform: translate(-4px, -50%); transition: opacity .16s ease, visibility .16s ease, transform .16s ease; pointer-events: none; }
+.section-progress-dot { width: 7px; height: 7px; border: 1px solid var(--muted); border-radius: 50%; background: var(--header); opacity: 1; transition: width .18s ease, height .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease; }
 .section-progress-marker.complete .section-progress-dot { border-color: var(--accent); background: var(--accent); }
 .section-progress-marker:hover::after, .section-progress-marker:focus-visible::after { opacity: 1; visibility: visible; transform: translate(0, -50%); }
 .section-progress-marker:hover .section-progress-dot, .section-progress-marker:focus-visible .section-progress-dot { width: 11px; height: 11px; border: 2px solid var(--accent); background: var(--header); box-shadow: 0 0 0 3px var(--accent-soft); }
@@ -275,7 +275,8 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .about-card > p:last-child { margin: 0; color: var(--muted); font-size: 0.75rem; line-height: 1.7; }
 .recognition-card { background: var(--accent-soft); }
 .language-list { margin-top: auto; }
-.language-list div { min-height: 65px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-top: 1px solid var(--line); }
+.language-list div { min-height: 65px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--line); }
+.language-list div:last-child { border-bottom: 0; }
 .language-list strong { font-size: 0.8125rem; font-weight: 650; }
 .language-list span { color: var(--muted); font: 600 0.75rem/1.3 var(--font-mono), monospace; text-align: right; text-transform: uppercase; }
 .education-year { margin: 45px 0 auto; color: var(--accent-secondary); font: 650 clamp(46px, 5vw, 62px)/.9 "Segoe UI Variable", sans-serif; letter-spacing: -.065em; }
@@ -337,7 +338,7 @@ footer p { text-align: center; }
   .brand-name { display: block; width: auto; text-align: left; }
   .desktop-nav, .resume-link { display: none; }
   .section-progress { position: fixed; inset: 69px 0 auto; width: auto; height: 2px; z-index: 101; opacity: 1; visibility: visible; }
-  .section-progress-track { inset: 0; width: auto; height: 2px; }
+  .section-progress-track { inset: 0; width: auto; height: 2px; transform: none; }
   .section-progress-fill { transform: scaleX(var(--scroll-progress)); transform-origin: left; }
   .section-progress-marker, .section-progress-count { display: none; }
   .rail-toggle { display: none; }
