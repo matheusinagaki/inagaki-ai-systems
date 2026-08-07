@@ -129,6 +129,8 @@ section[id] { scroll-margin-top: 32px; }
 .theme-icon { font-size: 1.0625rem; }
 .theme-label { display: block; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; }
 .resume-link { width: 100%; min-height: 42px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--accent-secondary); color: var(--bg); font: 800 0.75rem/1.15 var(--font-mono), monospace; text-align: left; text-transform: uppercase; }
+.github-link { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--muted-strong); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; transition: color .2s; }
+.github-link:hover { color: var(--accent); }
 .menu-toggle, .mobile-nav { display: none; }
 
 main { padding-left: var(--rail); transition: padding-left .3s ease; }

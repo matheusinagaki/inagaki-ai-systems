@@ -288,7 +288,7 @@ export default function Home() {
             <span className="theme-icon" aria-hidden="true">{theme === "dark" ? "☾" : "☼"}</span>
             <span className="theme-label">{theme === "dark" ? "Dark" : "Light"}</span>
           </button>
-          <a className="github-link" href="https://github.com/matheusinagaki" target="_blank" rel="noreferrer" style={{ color: "var(--muted-strong)", textDecoration: "none", fontSize: "0.85rem", fontWeight: 500 }}>
+          <a className="github-link" href="https://github.com/matheusinagaki" target="_blank" rel="noreferrer">
             GitHub<span aria-hidden="true">↗</span>
           </a>
           <a className="resume-link" href="/Matheus-Inagaki-CV.pdf" download>

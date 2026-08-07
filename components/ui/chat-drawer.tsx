@@ -134,7 +134,7 @@ export function ChatDrawer() {
               role="dialog"
               aria-modal="true"
               aria-labelledby="chat-title"
-              className="fixed bottom-0 right-0 top-0 z-[310] flex w-full max-w-md flex-col overflow-hidden border-l border-[var(--line)] bg-[var(--bg)] shadow-2xl sm:bottom-6 sm:right-6 sm:top-auto sm:h-[calc(100dvh-3rem)] sm:max-h-[600px] sm:w-[400px] sm:rounded-2xl sm:border"
+              className="fixed bottom-0 right-0 top-0 z-[310] flex w-full max-w-md flex-col overflow-hidden border-l border-[var(--line)] bg-[var(--bg)] shadow-[var(--shadow)] sm:bottom-6 sm:right-6 sm:top-auto sm:h-[calc(100dvh-3rem)] sm:max-h-[600px] sm:w-[400px] sm:rounded-2xl sm:border"
               initial={{ x: "100%", opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
