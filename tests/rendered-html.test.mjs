@@ -3,21 +3,23 @@ import { readFile, stat } from "node:fs/promises";
 import test from "node:test";
 
 test("keeps the finished portfolio content and professional metadata", async () => {
-  const [page, layout, socialImage] = await Promise.all([
+  const [page, layout, home, about, socialImage] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../data/home.ts", import.meta.url), "utf8"),
+    readFile(new URL("../components/sections/about-section.tsx", import.meta.url), "utf8"),
     stat(new URL("../public/linkedin-thumbnail.png", import.meta.url)),
   ]);
 
   assert.match(layout, /title: "Matheus Inagaki — AI Systems Engineer"/);
   assert.match(layout, /VERCEL_PROJECT_PRODUCTION_URL/);
   assert.match(layout, /linkedin-thumbnail\.png/);
-  assert.match(page, /IA que entende contexto/);
-  assert.match(page, /Dossiês de produção/);
-  assert.match(page, /20M\+/);
-  assert.match(page, /92%/);
-  assert.match(page, /JUN 2027/);
-  assert.match(page, /conclusão prevista para junho de 2027/);
+  assert.match(home, /IA que entende contexto/);
+  assert.match(home, /Dossiês de produção/);
+  assert.match(home, /20M\+/);
+  assert.match(home, /92%/);
+  assert.match(about, /JUN 2027/);
+  assert.match(home, /Universidade Anhembi Morumbi/);
   assert.match(page, /decrypt-line-measure/);
   assert.match(page, /https:\/\/github\.com\/matheusinagaki/);
   assert.match(page, /https:\/\/linkedin\.com\/in\/matheusinagaki/);
@@ -29,14 +31,16 @@ test("keeps the finished portfolio content and professional metadata", async () 
 });
 
 test("keeps the bilingual experience and responsive foundation in source", async () => {
-  const [page, css, layout, packageJson] = await Promise.all([
+  const [page, css, layout, packageJson, home, experience] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../data/home.ts", import.meta.url), "utf8"),
+    readFile(new URL("../components/sections/experience-section.tsx", import.meta.url), "utf8"),
   ]);
 
-  assert.match(page, /type Language = "pt" \| "en"/);
+  assert.match(home, /type Language = "pt" \| "en"/);
   assert.match(page, /aria-pressed/);
   assert.match(page, /document\.documentElement\.lang/);
   assert.match(page, /localStorage\.setItem\("theme"/);
@@ -53,9 +57,9 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(page, /aria-label={progressSectionLabels\[language\]\[sectionId\]}/);
   assert.match(page, /data-label={progressSectionLabels\[language\]\[sectionId\]}/);
   assert.match(page, /event\.key === "Escape"/);
-  assert.match(page, /selectedExperience === index/);
-  assert.match(page, /setSelectedExperience\(index\)/);
-  assert.match(page, /aria-pressed=\{selectedExperience === index\}/);
+  assert.match(experience, /selectedExperience === index/);
+  assert.match(experience, /setSelectedExperience\(index\)/);
+  assert.match(experience, /aria-pressed=\{selectedExperience === index\}/);
   assert.match(css, /@media \(max-width: 760px\)/);
   assert.match(css, /\.header-actions \{ flex: 0 0 auto; width: auto; height: 42px/);
   assert.match(css, /\.theme-toggle \{ flex: 0 0 42px; width: 42px; height: 42px/);
@@ -63,7 +67,7 @@ test("keeps the bilingual experience and responsive foundation in source", async
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(css, /:root\[data-theme="light"\]/);
   assert.match(css, /--bg: #F4F4F5/);
-  assert.match(css, /--surface: #F4F4F5/);
+  assert.match(css, /--surface: #FFFFFF/);
   assert.match(css, /--accent: #047857/);
   assert.match(css, /\.orbital-system::after \{ content: none; display: none; \}/);
   assert.match(css, /\.site-header \{ position: fixed; inset: 0 auto 0 0/);
