@@ -445,6 +445,10 @@ footer p { text-align: center; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .orbit-one span { animation-duration: 6.8s !important; animation-iteration-count: infinite !important; }
+  .orbit-two span { animation-duration: 8s !important; animation-iteration-count: infinite !important; }
+  .orbital-system:hover .orbit-one span { animation-duration: 1.2s !important; }
+  .orbital-system:hover .orbit-two span { animation-duration: 1.5s !important; }
   .reveal { animation: none; }
 }
 
