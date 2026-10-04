@@ -97,13 +97,14 @@ test("keeps the bilingual experience and responsive foundation in source", async
 });
 
 test("keeps the chat and browser security controls in place", async () => {
-  const [route, chatSecurity, chatDrawer, proxy, packageJson, knowledgeBase] = await Promise.all([
+  const [route, chatSecurity, chatDrawer, proxy, packageJson, knowledgeBase, nextConfig] = await Promise.all([
     readFile(new URL("../app/api/chat/route.ts", import.meta.url), "utf8"),
     readFile(new URL("../lib/chat-security.ts", import.meta.url), "utf8"),
     readFile(new URL("../components/ui/chat-drawer.tsx", import.meta.url), "utf8"),
     readFile(new URL("../proxy.ts", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../lib/data/knowledge_base.txt", import.meta.url), "utf8"),
+    readFile(new URL("../next.config.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(route, /checkChatRateLimit/);
@@ -141,10 +142,16 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(proxy, /frame-ancestors 'none'/);
   assert.match(proxy, /script-src-attr 'none'/);
   assert.match(proxy, /X-Content-Type-Options/);
+  assert.match(proxy, /requestHeaders\.set\("x-nonce", nonce\)/);
+  assert.doesNotMatch(proxy, /missing:/);
+  assert.match(nextConfig, /source: "\/:path\*"/);
+  assert.match(nextConfig, /X-Frame-Options/);
+  assert.match(nextConfig, /unoptimized: true/);
 
   const parsedPackage = JSON.parse(packageJson);
-  assert.equal(parsedPackage.dependencies.postcss, "8.5.19");
-  assert.equal(parsedPackage.overrides.postcss, "8.5.19");
+  assert.equal(parsedPackage.overrides.postcss, parsedPackage.dependencies.postcss);
+  assert.ok(versionAtLeast(parsedPackage.dependencies.postcss, "8.5.23"));
+  assert.ok(versionAtLeast(parsedPackage.dependencies.next, "16.3.8"));
   assert.equal(parsedPackage.devDependencies.vercel, undefined);
   assert.doesNotMatch(knowledgeBase, /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
   assert.doesNotMatch(knowledgeBase, /(?<!\d)(?:\+?\d[\d\s().-]{7,}\d)(?!\d)/);
@@ -153,3 +160,12 @@ test("keeps the chat and browser security controls in place", async () => {
   assert.match(knowledgeBase, /Instituto Butantan/);
   assert.match(knowledgeBase, /Universidade Anhembi Morumbi/);
 });
+
+function versionAtLeast(actual, minimum) {
+  const a = actual.replace(/^[^\d]*/, "").split(".").map(Number);
+  const b = minimum.split(".").map(Number);
+  for (let index = 0; index < b.length; index += 1) {
+    if ((a[index] ?? 0) !== b[index]) return (a[index] ?? 0) > b[index];
+  }
+  return true;
+}

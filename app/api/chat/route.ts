@@ -16,8 +16,8 @@ import {
   validateChatPayload,
 } from "@/lib/chat-security";
 import {
-  deriveChatSigningSecret,
   getOrCreateChatSession,
+  resolveChatSigningSecret,
   serializeChatSessionCookie,
   signAssistantResponse,
   verifyChatHistory,
@@ -53,8 +53,7 @@ export async function POST(req: Request) {
     if (!apiKey) {
       return jsonError("Assistente temporariamente indisponível.", 503);
     }
-    const signingSecret =
-      process.env.CHAT_SIGNING_SECRET ?? deriveChatSigningSecret(apiKey);
+    const signingSecret = resolveChatSigningSecret(process.env.CHAT_SIGNING_SECRET, apiKey);
     const chatSession = getOrCreateChatSession(req.headers.get("cookie"));
     if (!verifyChatHistory(validation.messages, signingSecret, chatSession.id)) {
       return jsonError("Histórico da conversa inválido.", 400);

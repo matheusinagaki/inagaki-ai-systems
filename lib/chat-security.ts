@@ -32,6 +32,7 @@ type RateLimitStore = Map<string, RateLimitEntry>;
 
 const rateLimitGlobal = globalThis as typeof globalThis & {
   chatRateLimitStore?: RateLimitStore;
+  warnedAboutLocalRateLimit?: boolean;
 };
 
 const rateLimitStore =
@@ -138,6 +139,15 @@ export async function checkChatRateLimit(request: Request): Promise<RateLimitRes
   const distributedConfig = getDistributedRateLimitConfig();
   if (distributedConfig) {
     return checkDistributedRateLimit(request, distributedConfig);
+  }
+
+  // The in-memory store is per serverless instance, so it is not a real
+  // global limit in production. Surface the misconfiguration in the logs.
+  if (process.env.VERCEL && !rateLimitGlobal.warnedAboutLocalRateLimit) {
+    rateLimitGlobal.warnedAboutLocalRateLimit = true;
+    console.warn(
+      "[CHAT CONFIG] Distributed rate limiting is not configured (UPSTASH_REDIS_REST_URL/TOKEN); using per-instance memory.",
+    );
   }
 
   const now = Date.now();

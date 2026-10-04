@@ -53,14 +53,8 @@ export function proxy(request: NextRequest) {
   return response;
 }
 
+// Prefetch requests are not excluded: skipping them let any client strip the
+// CSP and inject its own `x-nonce` request header into the rendered page.
 export const config = {
-  matcher: [
-    {
-      source: "/((?!_next/static|_next/image|favicon.ico).*)",
-      missing: [
-        { type: "header", key: "next-router-prefetch" },
-        { type: "header", key: "purpose", value: "prefetch" },
-      ],
-    },
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
