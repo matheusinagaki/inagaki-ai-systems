@@ -82,13 +82,13 @@ export function ChatDrawer() {
             type="button"
             onClick={openChat}
             aria-label="Abrir o chat para enviar uma mensagem"
-            className="fixed bottom-8 right-[5.75rem] z-[60] max-w-[calc(100vw-7.25rem)] rounded-xl border border-[var(--accent)] bg-[var(--surface)] px-4 py-3 text-left text-[var(--text)] shadow-[0_12px_32px_rgba(0,0,0,0.38)] transition-colors hover:bg-[var(--grid)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+            className="fixed bottom-8 right-[5.75rem] z-[60] max-w-[calc(100vw-7.25rem)] rounded-xl border border-[var(--accent)] bg-[var(--surface)] px-4 py-3 text-left text-[var(--text)] shadow-[0_12px_32px_rgba(0,0,0,0.38)] transition-colors hover:bg-[var(--surface-raised)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             initial={{ opacity: 0, x: 10, scale: 0.96 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 8, scale: 0.97 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            <span className="block font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
+            <span className="block font-mono text-xs font-bold uppercase tracking-[0.14em] text-[var(--accent)]">
               Chat online
             </span>
             <span id="chat-invitation-text" className="mt-1 block text-sm font-medium leading-snug">
@@ -148,7 +148,7 @@ export function ChatDrawer() {
                   </div>
                   <div>
                     <h3 id="chat-title" className="font-mono text-sm font-bold text-[var(--text)]">SYSTEM_AGENT</h3>
-                    <p className="font-mono text-[10px] text-[var(--accent-secondary)]">RAG ONLINE</p>
+                    <p className="font-mono text-xs text-[var(--accent-secondary)]">RAG ONLINE</p>
                   </div>
                 </div>
                 <button
@@ -192,7 +192,7 @@ export function ChatDrawer() {
                     </div>
                   )}
                   {error && (
-                    <div role="alert" className="max-w-[85%] rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400 [overflow-wrap:anywhere]">
+                    <div role="alert" className="max-w-[85%] rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-[var(--text)] [overflow-wrap:anywhere]">
                       Não foi possível concluir a resposta. Tente novamente em alguns instantes.
                     </div>
                   )}
@@ -225,7 +225,7 @@ export function ChatDrawer() {
                     maxLength={1600}
                     placeholder="Ask the agent anything..."
                     aria-label="Mensagem para o assistente"
-                    className="min-h-10 max-h-32 min-w-0 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-2 text-sm leading-6 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none"
+                    className="min-h-10 max-h-32 min-w-0 flex-1 resize-none overflow-y-auto bg-transparent px-2 py-2 text-sm leading-6 text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none disabled:opacity-50"
                     disabled={isLoading}
                   />
                   <button
@@ -236,7 +236,7 @@ export function ChatDrawer() {
                     <Send className="h-4 w-4" />
                   </button>
                 </form>
-                <p className="mt-2 text-center font-mono text-[10px] text-[var(--muted)]">
+                <p className="mt-2 text-center font-mono text-xs text-[var(--muted)]">
                   Powered by Vercel AI SDK & OpenRouter
                 </p>
               </div>
