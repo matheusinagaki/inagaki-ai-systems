@@ -149,7 +149,6 @@ main { padding-left: var(--rail); transition: padding-left .3s ease; }
 .hero { position: relative; min-height: 100svh; padding: 40px max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); display: grid; align-items: stretch; overflow: hidden; }
 .hero::before { content: "MI / SYSTEM DOSSIER / 2026"; position: absolute; top: 16px; right: 24px; color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
 .hero::after { content: ""; position: absolute; left: 62%; top: 0; bottom: 0; width: 1px; background: var(--line); }
-.hero-glow { position: absolute; right: 5%; top: 11%; width: 34vw; height: 34vw; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%); filter: blur(40px); transform: rotate(9deg); opacity: .8; animation: pulse-glow 8s ease-in-out infinite alternate; }
 .hero-grid { position: absolute; right: 7%; top: 13%; width: 34vw; aspect-ratio: 1; border: 1px dashed var(--line-strong); transform: rotate(-6deg); }
 .hero-content { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: minmax(0, 1.58fr) minmax(330px, .82fr); gap: clamp(40px, 6vw, 100px); align-items: center; }
 .hero-copy { padding: 72px 0 56px; }
@@ -298,7 +297,6 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .contact-section { position: relative; min-height: 580px; padding: 90px max(var(--space-8), calc((100% - 1020px) / 2)); display: grid; place-items: center; overflow: hidden; background: var(--contact); color: var(--text); }
 .contact-section::before { content: "HANDOFF PROTOCOL / OPEN CHANNEL / 2026"; position: absolute; left: 24px; top: 24px; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
 .contact-section::after { content: ""; position: absolute; inset: 50% 0 auto; height: 1px; background: color-mix(in srgb, var(--accent-contrast) 28%, transparent); }
-.contact-orb { position: absolute; width: 430px; height: 430px; border: 1px solid color-mix(in srgb, var(--accent-contrast) 28%, transparent); transform: rotate(45deg); }
 .contact-content { position: relative; z-index: 2; width: 100%; }
 .contact-content .eyebrow { color: var(--accent); }
 .contact-content h2 { max-width: 930px; font-size: clamp(58px, 8vw, 112px); line-height: .86; }
@@ -320,7 +318,6 @@ footer p { text-align: center; }
 @keyframes signal { 50% { opacity: .25; } }
 @keyframes trace-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(176px); } }
 @keyframes trace-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(126px); } }
-@keyframes pulse-glow { 0% { transform: scale(1) rotate(0deg); opacity: 0.6; } 100% { transform: scale(1.15) rotate(10deg); opacity: 1; } }
 
 @media (max-width: 1120px) {
   :root { --rail: 165px; }
@@ -377,7 +374,7 @@ footer p { text-align: center; }
   .skip-link { left: 15px; }
   .hero { min-height: auto; padding: 118px 20px 86px; }
   .hero::before { top: 84px; right: 20px; font-size: 0.75rem; }
-  .hero-glow, .hero-grid { width: 72vw; height: 72vw; opacity: .35; }
+  .hero-grid { width: 72vw; height: 72vw; opacity: .35; }
   .hero-content { gap: 60px; padding: 0; }
   .hero-copy { padding: 30px 0 0; }
   .availability { margin-bottom: 32px; }
@@ -419,7 +416,6 @@ footer p { text-align: center; }
   .about-card { min-height: 310px; border-right: 0; border-bottom: 1px solid var(--line); }
   .about-card:last-child { border-bottom: 0; }
   .contact-section { min-height: 610px; padding: var(--space-24) 20px; }
-  .contact-orb { width: 300px; height: 300px; }
   .contact-content h2 { font-size: clamp(54px, 15vw, 78px); }
   .contact-actions { display: grid; }
   footer { padding: 28px 20px; flex-direction: column; gap: 20px; }

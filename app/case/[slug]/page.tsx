@@ -3,7 +3,6 @@
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { casesData, Language, CaseStudy } from "@/data/cases";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 
 export default function CaseStudyPage({
   params,
@@ -53,11 +52,9 @@ export default function CaseStudyPage({
         <section className="section text-center" style={{ minHeight: "100vh", display: "grid", placeContent: "center" }}>
           <h2>{language === "pt" ? "Estudo de caso não encontrado." : "Case study not found."}</h2>
           <br/>
-          <MagneticButton>
-            <button className="button button-outline" onClick={() => router.push("/")}>
-              {language === "pt" ? "Voltar ao início" : "Back to home"}
-            </button>
-          </MagneticButton>
+          <button className="button button-outline" onClick={() => router.push("/")}>
+            {language === "pt" ? "Voltar ao início" : "Back to home"}
+          </button>
         </section>
       </main>
     );
@@ -93,7 +90,6 @@ export default function CaseStudyPage({
       <article id="conteudo">
         {/* Camada 1: Visão rápida */}
         <section className="hero case-hero" style={{ paddingBottom: "var(--space-16)" }}>
-          <div className="hero-glow" aria-hidden="true" />
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-content">
             <div className="hero-copy" style={{ maxWidth: "1000px" }}>
@@ -194,18 +190,14 @@ export default function CaseStudyPage({
 
         <section className="contact-section" style={{ padding: "100px 0 50px" }}>
           <div className="contact-content reveal" style={{ textAlign: "center", display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <MagneticButton>
-              <a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
-                {language === "pt" ? "Conversar sobre oportunidade" : "Discuss an opportunity"}
-                <span aria-hidden="true">↗</span>
-              </a>
-            </MagneticButton>
-            <MagneticButton>
-              <button className="button button-light" onClick={() => router.push("/")}>
-                {language === "pt" ? "Voltar ao Portfólio" : "Back to Portfolio"}
-                <span aria-hidden="true">↑</span>
-              </button>
-            </MagneticButton>
+            <a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
+              {language === "pt" ? "Conversar sobre oportunidade" : "Discuss an opportunity"}
+              <span aria-hidden="true">↗</span>
+            </a>
+            <button className="button button-light" onClick={() => router.push("/")}>
+              {language === "pt" ? "Voltar ao Portfólio" : "Back to Portfolio"}
+              <span aria-hidden="true">↑</span>
+            </button>
           </div>
         </section>
       </article>

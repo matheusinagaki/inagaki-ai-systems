@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import dynamic from "next/dynamic";
 const ChatDrawer = dynamic(() => import("@/components/ui/chat-drawer").then(mod => mod.ChatDrawer), { ssr: false });
 import { useDecrypt } from "@/hooks/use-decrypt";
@@ -301,7 +300,6 @@ export default function Home() {
 
       <div id="conteudo">
         <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-glow" aria-hidden="true" />
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-content">
             <div className="hero-copy">
@@ -314,12 +312,12 @@ export default function Home() {
               </h1>
               <p className="hero-description">{t.heroCopy}</p>
               <div className="hero-actions">
-                <MagneticButton><a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
+                <a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
                   {t.contact}<span aria-hidden="true">↗</span>
-                </a></MagneticButton>
-                <MagneticButton><a className="button button-secondary" href="#impacto">
+                </a>
+                <a className="button button-secondary" href="#impacto">
                   {t.explore}<span aria-hidden="true">↓</span>
-                </a></MagneticButton>
+                </a>
               </div>
             </div>
 
@@ -364,7 +362,6 @@ export default function Home() {
         <AboutSection language={language} />
 
         <section className="contact-section" id="contato">
-          <div className="contact-orb" aria-hidden="true" />
           <div className="contact-content reveal">
             <p className="eyebrow">{t.ctaEyebrow}</p>
             <h2>{t.ctaTitle}</h2><p>{t.ctaCopy}</p>
