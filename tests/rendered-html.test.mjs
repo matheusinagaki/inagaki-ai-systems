@@ -169,3 +169,10 @@ function versionAtLeast(actual, minimum) {
   }
   return true;
 }
+
+test("hero decrypt effect stays still for reduced-motion users", async () => {
+  const decrypt = await readFile(new URL("../hooks/use-decrypt.ts", import.meta.url), "utf8");
+
+  assert.match(decrypt, /matchMedia\("\(prefers-reduced-motion: reduce\)"\)\.matches\) return;/);
+  assert.match(decrypt, /return hasMounted \? displayText : text;/);
+});

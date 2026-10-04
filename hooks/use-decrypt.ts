@@ -11,6 +11,9 @@ export function useDecrypt(text: string, speed: number = 50, delay: number = 0) 
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
+    // Com movimento reduzido nunca embaralha: hasMounted fica false e o hook devolve o texto limpo
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     // Use setTimeout to avoid synchronous setState inside an effect
     const mountTimer = setTimeout(() => {
       setHasMounted(true);
