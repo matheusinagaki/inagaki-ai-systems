@@ -31,6 +31,27 @@ export function serializeChatSessionCookie(sessionId: string, secure: boolean): 
   return attributes.join("; ");
 }
 
+const MIN_SIGNING_SECRET_LENGTH = 32;
+let warnedAboutSigningSecret = false;
+
+// A short CHAT_SIGNING_SECRET would make history signatures brute-forceable,
+// so it is never used; the API-key-derived secret is the stronger fallback.
+export function resolveChatSigningSecret(
+  configuredSecret: string | undefined,
+  apiKey: string,
+): string {
+  if (configuredSecret && configuredSecret.length >= MIN_SIGNING_SECRET_LENGTH) {
+    return configuredSecret;
+  }
+  if (process.env.NODE_ENV === "production" && !warnedAboutSigningSecret) {
+    warnedAboutSigningSecret = true;
+    console.warn(
+      "[CHAT CONFIG] CHAT_SIGNING_SECRET is missing or shorter than 32 characters; falling back to a secret derived from the API key.",
+    );
+  }
+  return deriveChatSigningSecret(apiKey);
+}
+
 export function deriveChatSigningSecret(apiKey: string): string {
   return createHmac("sha256", apiKey)
     .update("portfolio-chat-history-signing-v1")

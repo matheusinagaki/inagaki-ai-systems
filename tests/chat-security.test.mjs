@@ -11,7 +11,9 @@ import {
 } from "../lib/chat-security.ts";
 import {
   CHAT_HISTORY_MAX_AGE_MS,
+  deriveChatSigningSecret,
   getOrCreateChatSession,
+  resolveChatSigningSecret,
   serializeChatSessionCookie,
   signAssistantResponse,
   verifyChatHistory,
@@ -197,4 +199,12 @@ test("ignores untrusted proxy client headers in the local fallback limiter", asy
   }
   assert.equal(attempts.slice(0, 12).every(({ allowed }) => allowed), true);
   assert.equal(attempts[12].allowed, false);
+});
+
+test("never signs chat history with a short configured secret", () => {
+  const apiKey = "test-api-key";
+  const strong = "s".repeat(32);
+  assert.equal(resolveChatSigningSecret(strong, apiKey), strong);
+  assert.equal(resolveChatSigningSecret("changeme", apiKey), deriveChatSigningSecret(apiKey));
+  assert.equal(resolveChatSigningSecret(undefined, apiKey), deriveChatSigningSecret(apiKey));
 });
