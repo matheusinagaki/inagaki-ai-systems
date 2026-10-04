@@ -72,9 +72,6 @@
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--bg); color-scheme: dark; }
 html[data-theme="light"] { color-scheme: light; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-}
 body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-sans), sans-serif; -webkit-font-smoothing: antialiased; transition: background .3s ease, color .3s ease; }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(to bottom, black, transparent 72%); }
 ::selection { background: var(--accent); color: var(--accent-contrast); }
@@ -264,7 +261,7 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .timeline-period { color: var(--muted); font: 650 0.75rem/1.5 var(--font-mono), monospace; }
 .timeline-period em { width: fit-content; margin-top: var(--space-3); padding: var(--space-1) var(--space-2); display: block; background: var(--accent-secondary); color: var(--bg); font-style: normal; font-size: 0.75rem; text-transform: uppercase; }
 .timeline-content { padding-right: 80px; }
-.timeline-content > p { margin: 0 0 var(--space-2); color: var(--accent); font: 700 0.75rem/1.4 var(--font-mono), monospace; letter-spacing: .1em; text-transform: uppercase; }
+.timeline-content > p { margin: 0 0 var(--space-2); color: var(--accent); font: 700 0.75rem/1.4 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; }
 .timeline-content h3 { margin: 0 0 var(--space-4); font-size: clamp(26px, 3vw, 40px); font-weight: 610; letter-spacing: -.045em; }
 .timeline-content > div:not(.tags) { max-width: 770px; color: var(--muted); font-size: 1rem; line-height: 1.72; }
 
