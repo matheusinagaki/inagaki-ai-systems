@@ -63,17 +63,29 @@ export default function CaseStudyPage({
   return (
     <main className="rail-collapsed case-study-page">
       <header className="site-header" style={{ position: "absolute" }}>
-        <button className="brand" onClick={() => router.push("/")} style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}>
+        <button
+          className="brand"
+          type="button"
+          onClick={() => router.push("/")}
+          aria-label={language === "pt" ? "Voltar ao início" : "Back to home"}
+          style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}
+        >
           <span className="brand-mark">←</span>
           <span className="brand-name">{language === "pt" ? "Voltar" : "Back"}</span>
         </button>
 
         <div className="header-actions">
-          <div className="language-switch">
-            <button className={language === "pt" ? "active" : ""} onClick={() => changeLanguage("pt")}>PT</button>
-            <button className={language === "en" ? "active" : ""} onClick={() => changeLanguage("en")}>EN</button>
+          <div className="language-switch" aria-label={language === "pt" ? "Selecionar idioma" : "Select language"}>
+            <button type="button" className={language === "pt" ? "active" : ""} onClick={() => changeLanguage("pt")} aria-pressed={language === "pt"}>PT</button>
+            <button type="button" className={language === "en" ? "active" : ""} onClick={() => changeLanguage("en")} aria-pressed={language === "en"}>EN</button>
           </div>
-          <button className="theme-toggle" type="button" onClick={toggleTheme}>
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-pressed={theme === "dark"}
+            aria-label={language === "pt" ? `Ativar modo ${theme === "dark" ? "claro" : "escuro"}` : `Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
             <span className="theme-icon" aria-hidden="true">{theme === "dark" ? "☾" : "☼"}</span>
             <span className="theme-label">{theme === "dark" ? "Dark" : "Light"}</span>
           </button>
