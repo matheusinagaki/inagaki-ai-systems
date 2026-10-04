@@ -261,6 +261,7 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 /* Decision matrix */
 .expertise-section { max-width: none; padding-left: max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); padding-right: max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); border-block: 1px solid var(--line-strong); background: var(--bg-alt); }
 .expertise-grid { border-top: 1px solid var(--line-strong); }
+.case-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
 .expertise-card { min-height: 215px; padding: var(--space-8) var(--space-5); display: grid; grid-template-columns: 70px minmax(180px, .55fr) minmax(240px, .75fr) 1fr; gap: 30px; align-items: start; border: 1px solid transparent; border-bottom-color: var(--line); transition-property: padding, background, box-shadow; transition-duration: .3s; transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
 .expertise-card:hover { background: var(--card-hover); }
 .expertise-number { color: var(--accent); font: 800 0.75rem/1 var(--font-mono), monospace; }
@@ -335,6 +336,7 @@ footer p { text-align: center; }
   .case-main { grid-template-columns: 180px 1fr; }
   .expertise-card { grid-template-columns: 60px 1fr 1fr; }
   .skill-list { grid-column: 2 / -1; }
+  .case-detail-grid { grid-template-columns: 1fr; }
   .about-intro { grid-template-columns: 1fr 1fr; }
   .about-intro .eyebrow { grid-column: 1 / -1; }
   .about-grid { grid-template-columns: 1fr 1fr; }

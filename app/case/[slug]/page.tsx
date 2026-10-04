@@ -137,7 +137,7 @@ export default function CaseStudyPage({
               <h2>{language === "pt" ? "Contexto & Solução" : "Context & Solution"}</h2>
             </div>
           </div>
-          <div className="expertise-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          <div className="expertise-grid case-detail-grid">
             <div className="detail-card reveal">
               <h3>{language === "pt" ? "O Problema" : "The Problem"}</h3>
               <p style={{ marginBottom: "16px", color: "var(--muted-strong)" }}>{caseData.context[language]}</p>
@@ -173,7 +173,7 @@ export default function CaseStudyPage({
             <p><strong>{language === "pt" ? "Fluxo de Dados: " : "Data Flow: "}</strong> {caseData.dataFlow[language]}</p>
           </div>
 
-          <div className="expertise-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          <div className="expertise-grid case-detail-grid">
             <div className="detail-card reveal">
               <h3>{language === "pt" ? "Decisões Técnicas" : "Technical Decisions"}</h3>
               <ul style={{ paddingLeft: "20px", marginTop: "16px", color: "var(--text)" }}>
