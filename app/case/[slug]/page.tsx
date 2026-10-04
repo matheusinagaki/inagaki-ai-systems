@@ -103,13 +103,13 @@ export default function CaseStudyPage({
               </h1>
               <p className="hero-description">{caseData.summary[language]}</p>
               
-              <div style={{ display: "flex", gap: "24px", marginTop: "32px", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", gap: "24px", marginTop: "32px", flexWrap: "wrap", alignItems: "baseline" }}>
                 <div className="case-metric" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
                   <strong style={{ fontSize: "2rem", color: "var(--accent)" }}>{caseData.metric}</strong>
                   <span style={{ color: "var(--muted)", textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.1em", fontWeight: 700 }}>{caseData.metricLabel[language]}</span>
                 </div>
                 <div className="case-metric" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <strong style={{ fontSize: "1.25rem", color: "var(--text)", marginTop: "10px" }}>Role</strong>
+                  <strong style={{ fontSize: "1.25rem", color: "var(--text)" }}>Role</strong>
                   <span style={{ color: "var(--muted)", textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.1em", fontWeight: 700 }}>{caseData.role[language]}</span>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export default function CaseStudyPage({
           <div className="detail-card spotlight-card reveal" style={{ marginBottom: "32px" }}>
             <div className="spotlight-overlay" />
             <h3 style={{ marginBottom: "16px" }}>{language === "pt" ? "Design de Arquitetura" : "Architecture Design"}</h3>
-            <div style={{ background: "var(--bg)", padding: "24px", borderRadius: "8px", border: "1px solid var(--line-strong)", fontFamily: "var(--font-mono)", fontSize: "0.85rem", color: "var(--muted-strong)", marginBottom: "24px", overflowX: "auto" }}>
+            <div style={{ background: "var(--bg)", padding: "24px", borderRadius: "8px", border: "1px solid var(--line-strong)", fontFamily: "var(--font-mono)", fontSize: "0.875rem", color: "var(--muted-strong)", marginBottom: "24px", overflowX: "auto" }}>
               <code>{caseData.architecture[language]}</code>
             </div>
             <p><strong>{language === "pt" ? "Fluxo de Dados: " : "Data Flow: "}</strong> {caseData.dataFlow[language]}</p>
