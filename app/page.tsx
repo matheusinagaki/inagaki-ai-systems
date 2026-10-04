@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, type CSSProperties } from "react";
-import { MagneticButton } from "@/components/ui/magnetic-button";
 import dynamic from "next/dynamic";
 const ChatDrawer = dynamic(() => import("@/components/ui/chat-drawer").then(mod => mod.ChatDrawer), { ssr: false });
 import { useDecrypt } from "@/hooks/use-decrypt";
@@ -64,28 +63,6 @@ function DecryptLine({
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
-
-  useEffect(() => {
-    let ticking = false;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const cards = document.querySelectorAll('.spotlight-card');
-          cards.forEach((card) => {
-            const rect = (card as HTMLElement).getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => document.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -323,7 +300,6 @@ export default function Home() {
 
       <div id="conteudo">
         <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-glow" aria-hidden="true" />
           <div className="hero-grid" aria-hidden="true" />
           <div className="hero-content">
             <div className="hero-copy">
@@ -336,12 +312,12 @@ export default function Home() {
               </h1>
               <p className="hero-description">{t.heroCopy}</p>
               <div className="hero-actions">
-                <MagneticButton><a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
+                <a className="button button-primary" href="mailto:matheusv.inagaki@gmail.com">
                   {t.contact}<span aria-hidden="true">↗</span>
-                </a></MagneticButton>
-                <MagneticButton><a className="button button-secondary" href="#impacto">
+                </a>
+                <a className="button button-secondary" href="#impacto">
                   {t.explore}<span aria-hidden="true">↓</span>
-                </a></MagneticButton>
+                </a>
               </div>
             </div>
 
@@ -386,7 +362,6 @@ export default function Home() {
         <AboutSection language={language} />
 
         <section className="contact-section" id="contato">
-          <div className="contact-orb" aria-hidden="true" />
           <div className="contact-content reveal">
             <p className="eyebrow">{t.ctaEyebrow}</p>
             <h2>{t.ctaTitle}</h2><p>{t.ctaCopy}</p>
@@ -394,7 +369,7 @@ export default function Home() {
               <a className="button button-light" href="mailto:matheusv.inagaki@gmail.com">{t.email}<span aria-hidden="true">↗</span></a>
               <a className="button button-outline" href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">{t.linkedin}<span aria-hidden="true">↗</span></a>
             </div>
-            <p style={{ marginTop: "24px", color: "var(--muted)", fontSize: "0.85rem" }}>
+            <p style={{ marginTop: "24px", color: "var(--muted)", fontSize: "0.875rem" }}>
               {language === "pt" ? "Ou copie o endereço:" : "Or copy the address:"} <span style={{ color: "var(--text)", userSelect: "all" }}>matheusv.inagaki@gmail.com</span>
             </p>
           </div>

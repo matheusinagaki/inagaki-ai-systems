@@ -1,9 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { type Language, homeContent } from "@/data/home";
-import { staggerContainer, fadeUpItem } from "@/lib/animations";
 
 interface CasesSectionProps {
   language: Language;
@@ -25,11 +23,11 @@ export function CasesSection({ language }: CasesSectionProps) {
         </div>
       </div>
 
-      <motion.div className="case-list" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
+      <div className="case-list">
         {t.cases.map((item) => (
           <Link key={item.index} href={`/case/${item.slug}`} passHref legacyBehavior>
-            <motion.a variants={fadeUpItem} className="case-card spotlight-card reveal" style={{ textDecoration: "none", color: "inherit", cursor: "pointer", display: "block" }}>
-              <div className="spotlight-overlay" /><div className="case-index">/{item.index}</div>
+            <a className="case-card reveal" style={{ textDecoration: "none", color: "inherit", cursor: "pointer", display: "block" }}>
+              <div className="case-index">/{item.index}</div>
               <div className="case-main">
                 <div className="case-metric"><strong>{item.metric}</strong><span>{item.metricLabel}</span></div>
                 <h3>{item.title}</h3>
@@ -37,10 +35,10 @@ export function CasesSection({ language }: CasesSectionProps) {
                 <div className="tags">{item.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
               </div>
               <span className="case-arrow" aria-hidden="true">↗</span>
-            </motion.a>
+            </a>
           </Link>
         ))}
-      </motion.div>
+      </div>
     </section>
   );
 }
