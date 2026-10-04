@@ -213,7 +213,7 @@ h1 > .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); background: var(--text); color: var(--bg); }
 .metric { min-height: 128px; padding: 20px clamp(16px, 2.4vw, 38px); display: grid; align-content: space-between; border-right: 1px solid color-mix(in srgb, var(--bg) 24%, transparent); }
 .metric:last-child { border-right: 0; }
-.metric strong { font: 720 clamp(35px, 4vw, 62px)/.95 "Segoe UI Variable", sans-serif; letter-spacing: -.06em; }
+.metric strong { font: 700 clamp(35px, 4vw, 62px)/.95 var(--font-sans), sans-serif; letter-spacing: -.06em; }
 .metric span { max-width: 190px; font: 700 0.75rem/1.45 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; }
 
 .section { max-width: var(--max); margin: 0 auto; padding: var(--space-32) var(--space-8); }
