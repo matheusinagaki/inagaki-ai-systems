@@ -19,8 +19,8 @@ export function ExpertiseSection({ language }: ExpertiseSectionProps) {
       </div>
       <motion.div className="expertise-grid" variants={staggerContainer} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-50px" }}>
         {t.expertise.map((item) => (
-          <motion.article variants={fadeUpItem} className="expertise-card spotlight-card reveal" key={item.number}>
-            <div className="spotlight-overlay" /><div className="expertise-number">{item.number}</div>
+          <motion.article variants={fadeUpItem} className="expertise-card reveal" key={item.number}>
+            <div className="expertise-number">{item.number}</div>
             <h3>{item.title}</h3><p>{item.copy}</p>
             <div className="skill-list">{item.items.map((skill) => <span key={skill}>{skill}</span>)}</div>
           </motion.article>

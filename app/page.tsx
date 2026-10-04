@@ -65,28 +65,6 @@ function DecryptLine({
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
 
-  useEffect(() => {
-    let ticking = false;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const cards = document.querySelectorAll('.spotlight-card');
-          cards.forEach((card) => {
-            const rect = (card as HTMLElement).getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    document.addEventListener('mousemove', handleMouseMove, { passive: true });
-    return () => document.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
   const [desktopRailOpen, setDesktopRailOpen] = useState(false);
