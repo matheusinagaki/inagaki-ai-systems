@@ -182,28 +182,28 @@ h1 > .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent
 
 /* Inference trace: intentionally flat, technical, non-card UI */
 .system-card { position: relative; min-height: 570px; padding: 16px; border: 1px solid var(--line-strong); background: var(--bg); box-shadow: 14px 14px 0 var(--accent-soft); }
-.system-card::before, .system-card::after { position: absolute; padding: 0 5px; background: var(--bg); color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .13em; }
+.system-card::before, .system-card::after { position: absolute; padding: 0 5px; background: var(--bg); color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; }
 .system-card::before { content: "TRACE::INFERENCE"; left: 12px; top: -4px; }
 .system-card::after { content: "LIVE"; right: 12px; bottom: -4px; color: var(--accent-secondary); }
-.system-topline { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid var(--line); color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .13em; }
-.orbital-system { position: relative; height: 280px; margin: 18px 0; display: grid; place-items: center; background: repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px); overflow: hidden; cursor: crosshair; }
+.system-topline { display: flex; justify-content: space-between; padding-bottom: var(--space-4); border-bottom: 1px solid var(--line); color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; }
+.orbital-system { position: relative; height: 280px; margin: var(--space-4) 0; display: grid; place-items: center; background: repeating-linear-gradient(0deg, transparent 0 31px, var(--grid) 31px 32px), repeating-linear-gradient(90deg, transparent 0 31px, var(--grid) 31px 32px); overflow: hidden; cursor: crosshair; }
 .orbital-system::before { content: "CONTEXT\A RETRIEVAL\A REASONING\A OUTPUT"; white-space: pre; position: absolute; left: 10px; top: 10px; color: var(--muted); font: 650 0.75rem/1.8 var(--font-mono), monospace; letter-spacing: .12em; }
 .orbital-system::after { content: none; display: none; }
 .orbit { position: absolute; border: 1px solid var(--line-strong); border-radius: 0; animation: none; }
 .orbit-one { width: 176px; height: 176px; transform: rotate(45deg); }
 .orbit-two { width: 250px; height: 126px; border-style: dashed; }
-.orbit span { position: absolute; width: 9px; height: 9px; left: -5px; top: calc(50% - 5px); background: var(--accent); box-shadow: 0 0 18px var(--accent-soft); animation: trace-x 3.4s ease-in-out infinite; transition: all 0.4s ease; }
-.orbit-two span { left: auto; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--accent-secondary); animation: trace-y 4s ease-in-out infinite; transition: all 0.4s ease; }
-.core-node { position: relative; z-index: 3; width: 82px; height: 82px; display: grid; place-items: center; background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.core-node span { font: 900 1.1875rem/1 var(--font-mono), monospace; letter-spacing: -.08em; }
+.orbit span { position: absolute; width: 9px; height: 9px; left: -5px; top: calc(50% - 5px); background: var(--accent); box-shadow: 0 0 18px var(--accent-soft); animation: trace-x 3.4s ease-in-out infinite; transition: transform .3s ease, box-shadow .3s ease; }
+.orbit-two span { left: auto; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--accent-secondary); animation: trace-y 4s ease-in-out infinite; transition: transform .3s ease, box-shadow .3s ease; }
+.core-node { position: relative; z-index: 3; width: 82px; height: 82px; display: grid; place-items: center; background: var(--text); color: var(--bg); box-shadow: 9px 9px 0 var(--accent); transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.core-node span { font: 800 1.1875rem/1 var(--font-mono), monospace; letter-spacing: -.08em; }
 
 .orbital-system:hover .orbit span { animation-duration: 1.2s; transform: scale(1.4); box-shadow: 0 0 30px var(--accent); }
 .orbital-system:hover .orbit-two span { animation-duration: 1.5s; transform: scale(1.4); box-shadow: 0 0 30px var(--accent-secondary); }
 .orbital-system:hover .core-node { transform: scale(1.05); box-shadow: 16px 16px 0 var(--accent); }
-.system-status { padding: 11px 0; display: flex; align-items: center; gap: 9px; border-block: 1px solid var(--line); color: var(--muted-strong); font: 650 0.75rem/1 var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .1em; }
+.system-status { padding: var(--space-3) 0; display: flex; align-items: center; gap: var(--space-2); border-block: 1px solid var(--line); color: var(--muted-strong); font: 650 0.75rem/1 var(--font-mono), monospace; text-transform: uppercase; letter-spacing: .08em; }
 .status-pulse { width: 7px; height: 7px; background: var(--accent-secondary); }
 .system-list { counter-reset: systems; }
-.system-row { min-height: 50px; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); color: var(--muted-strong); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .11em; }
+.system-row { min-height: 50px; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); color: var(--muted-strong); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; }
 .system-row strong { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; }
 .system-index { color: var(--accent); }
 .scroll-cue { position: absolute; z-index: 3; left: var(--space-8); bottom: 18px; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; text-transform: uppercase; }
@@ -448,10 +448,6 @@ footer p { text-align: center; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
-  .orbit-one span { animation-duration: 6.8s !important; animation-iteration-count: infinite !important; }
-  .orbit-two span { animation-duration: 8s !important; animation-iteration-count: infinite !important; }
-  .orbital-system:hover .orbit-one span { animation-duration: 1.2s !important; }
-  .orbital-system:hover .orbit-two span { animation-duration: 1.5s !important; }
   .reveal { animation: none; }
 }
 
