@@ -61,19 +61,31 @@ export default function CaseStudyPage({
   }
 
   return (
-    <main className="rail-collapsed case-study-page">
-      <header className="site-header" style={{ position: "absolute" }}>
-        <button className="brand" onClick={() => router.push("/")} style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}>
+    <main className="rail-open case-study-page">
+      <header className="site-header">
+        <button
+          className="brand"
+          type="button"
+          onClick={() => router.push("/")}
+          aria-label={language === "pt" ? "Voltar ao início" : "Back to home"}
+          style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}
+        >
           <span className="brand-mark">←</span>
           <span className="brand-name">{language === "pt" ? "Voltar" : "Back"}</span>
         </button>
 
         <div className="header-actions">
-          <div className="language-switch">
-            <button className={language === "pt" ? "active" : ""} onClick={() => changeLanguage("pt")}>PT</button>
-            <button className={language === "en" ? "active" : ""} onClick={() => changeLanguage("en")}>EN</button>
+          <div className="language-switch" aria-label={language === "pt" ? "Selecionar idioma" : "Select language"}>
+            <button type="button" className={language === "pt" ? "active" : ""} onClick={() => changeLanguage("pt")} aria-pressed={language === "pt"}>PT</button>
+            <button type="button" className={language === "en" ? "active" : ""} onClick={() => changeLanguage("en")} aria-pressed={language === "en"}>EN</button>
           </div>
-          <button className="theme-toggle" type="button" onClick={toggleTheme}>
+          <button
+            className="theme-toggle"
+            type="button"
+            onClick={toggleTheme}
+            aria-pressed={theme === "dark"}
+            aria-label={language === "pt" ? `Ativar modo ${theme === "dark" ? "claro" : "escuro"}` : `Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          >
             <span className="theme-icon" aria-hidden="true">{theme === "dark" ? "☾" : "☼"}</span>
             <span className="theme-label">{theme === "dark" ? "Dark" : "Light"}</span>
           </button>
@@ -125,7 +137,7 @@ export default function CaseStudyPage({
               <h2>{language === "pt" ? "Contexto & Solução" : "Context & Solution"}</h2>
             </div>
           </div>
-          <div className="expertise-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          <div className="expertise-grid case-detail-grid">
             <div className="detail-card reveal">
               <h3>{language === "pt" ? "O Problema" : "The Problem"}</h3>
               <p style={{ marginBottom: "16px", color: "var(--muted-strong)" }}>{caseData.context[language]}</p>
@@ -161,7 +173,7 @@ export default function CaseStudyPage({
             <p><strong>{language === "pt" ? "Fluxo de Dados: " : "Data Flow: "}</strong> {caseData.dataFlow[language]}</p>
           </div>
 
-          <div className="expertise-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "32px" }}>
+          <div className="expertise-grid case-detail-grid">
             <div className="detail-card reveal">
               <h3>{language === "pt" ? "Decisões Técnicas" : "Technical Decisions"}</h3>
               <ul style={{ paddingLeft: "20px", marginTop: "16px", color: "var(--text)" }}>
