@@ -152,7 +152,7 @@ main { padding-left: var(--rail); transition: padding-left .3s ease; }
 }
 
 /* Opening system brief */
-.hero { position: relative; min-height: 100svh; padding: 40px max(var(--space-8), calc((100vw - var(--rail) - var(--max)) / 2 + var(--space-8))); display: grid; align-items: stretch; overflow: hidden; }
+.hero { position: relative; min-height: 100svh; padding: 40px max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); display: grid; align-items: stretch; overflow: hidden; }
 .hero::before { content: "MI / SYSTEM DOSSIER / 2026"; position: absolute; top: 16px; right: 24px; color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
 .hero::after { content: ""; position: absolute; left: 62%; top: 0; bottom: 0; width: 1px; background: var(--line); }
 .hero-glow { position: absolute; right: 5%; top: 11%; width: 34vw; height: 34vw; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%); filter: blur(40px); transform: rotate(9deg); opacity: .8; animation: pulse-glow 8s ease-in-out infinite alternate; }
@@ -266,7 +266,7 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .timeline-content > div:not(.tags) { max-width: 770px; color: var(--muted); font-size: 1rem; line-height: 1.72; }
 
 /* Decision matrix */
-.expertise-section { max-width: none; padding-left: max(var(--space-8), calc((100vw - var(--rail) - var(--max)) / 2 + var(--space-8))); padding-right: max(var(--space-8), calc((100vw - var(--rail) - var(--max)) / 2 + var(--space-8))); border-block: 1px solid var(--line-strong); background: var(--bg-alt); }
+.expertise-section { max-width: none; padding-left: max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); padding-right: max(var(--space-8), calc((100% - var(--max)) / 2 + var(--space-8))); border-block: 1px solid var(--line-strong); background: var(--bg-alt); }
 .expertise-grid { border-top: 1px solid var(--line-strong); }
 .expertise-card { min-height: 215px; padding: var(--space-8) var(--space-5); display: grid; grid-template-columns: 70px minmax(180px, .55fr) minmax(240px, .75fr) 1fr; gap: 30px; align-items: start; border: 1px solid transparent; border-bottom-color: var(--line); transition-property: padding, background, border-color, border-radius, box-shadow, transform; transition-duration: .3s; transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
 .expertise-card:hover { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: var(--line-strong); border-radius: 12px; box-shadow: var(--shadow-card), var(--glass-border); transform: translateY(-2px); z-index: 10; }
@@ -303,7 +303,7 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 .education-year { margin: var(--space-12) 0 auto; color: var(--accent-secondary); font: 650 clamp(46px, 5vw, 62px)/.9 var(--font-sans), sans-serif; letter-spacing: -.065em; }
 
 /* Handoff protocol */
-.contact-section { position: relative; min-height: 580px; padding: 90px max(var(--space-8), calc((100vw - var(--rail) - 1020px) / 2)); display: grid; place-items: center; overflow: hidden; background: var(--contact); color: var(--text); }
+.contact-section { position: relative; min-height: 580px; padding: 90px max(var(--space-8), calc((100% - 1020px) / 2)); display: grid; place-items: center; overflow: hidden; background: var(--contact); color: var(--text); }
 .contact-section::before { content: "HANDOFF PROTOCOL / OPEN CHANNEL / 2026"; position: absolute; left: 24px; top: 24px; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
 .contact-section::after { content: ""; position: absolute; inset: 50% 0 auto; height: 1px; background: color-mix(in srgb, var(--accent-contrast) 28%, transparent); }
 .contact-orb { position: absolute; width: 430px; height: 430px; border: 1px solid color-mix(in srgb, var(--accent-contrast) 28%, transparent); transform: rotate(45deg); }
