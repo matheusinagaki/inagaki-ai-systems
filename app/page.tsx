@@ -394,7 +394,7 @@ export default function Home() {
               <a className="button button-light" href="mailto:matheusv.inagaki@gmail.com">{t.email}<span aria-hidden="true">↗</span></a>
               <a className="button button-outline" href="https://linkedin.com/in/matheusinagaki" target="_blank" rel="noreferrer">{t.linkedin}<span aria-hidden="true">↗</span></a>
             </div>
-            <p style={{ marginTop: "24px", color: "var(--muted)", fontSize: "0.85rem" }}>
+            <p style={{ marginTop: "24px", color: "var(--muted)", fontSize: "0.875rem" }}>
               {language === "pt" ? "Ou copie o endereço:" : "Or copy the address:"} <span style={{ color: "var(--text)", userSelect: "all" }}>matheusv.inagaki@gmail.com</span>
             </p>
           </div>
