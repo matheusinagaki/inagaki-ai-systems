@@ -288,23 +288,22 @@ h2 { max-width: 920px; margin: 0; font-size: clamp(43px, 5.2vw, 78px); font-weig
 
 /* Field notes */
 .about-intro { display: grid; grid-template-columns: 140px minmax(0, 1.25fr) minmax(280px, .55fr); gap: var(--space-12); align-items: start; margin-bottom: var(--space-16); }
-.about-intro h2 { font-size: clamp(42px, 5.5vw, 78px); }
-.about-intro > p:last-child { margin: 5px 0 0; padding-left: 20px; border-left: 1px solid var(--line-strong); color: var(--muted); font-size: 1rem; line-height: 1.8; }
+.about-intro > p:last-child { margin: var(--space-1) 0 0; padding-left: 20px; border-left: 1px solid var(--line-strong); color: var(--muted); font-size: 1rem; line-height: 1.8; }
 .about-grid { display: grid; grid-template-columns: 1.4fr .8fr .8fr; border: 1px solid var(--line-strong); border-radius: 16px; overflow: hidden; background: var(--glass-bg); backdrop-filter: blur(24px); box-shadow: var(--shadow-card), var(--glass-border); }
 .about-card { min-height: 360px; padding: 28px; display: flex; flex-direction: column; border-right: 1px solid var(--line); background: transparent; transition: background .3s; }
 .about-card:last-child { border-right: 0; }
 .about-card:hover { background: var(--card-hover); }
-.card-label { margin: 0; color: var(--muted); font: 750 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; text-transform: uppercase; }
-.award-mark { margin: 42px 0 auto; color: var(--accent); font-size: 4.5rem; line-height: .8; }
+.card-label { margin: 0; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; text-transform: uppercase; }
+.award-mark { margin: var(--space-12) 0 auto; color: var(--accent); font-size: 4.5rem; line-height: .8; }
 .about-card h3 { margin: auto 0 14px; font-size: 1.625rem; font-weight: 610; letter-spacing: -.04em; }
-.about-card > p:last-child { margin: 0; color: var(--muted); font-size: 0.75rem; line-height: 1.7; }
+.about-card > p:last-child { margin: 0; color: var(--muted); font-size: 0.9375rem; line-height: 1.7; }
 .recognition-card { background: var(--accent-soft); }
 .language-list { margin-top: auto; }
-.language-list div { min-height: 65px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--line); }
+.language-list div { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); border-bottom: 1px solid var(--line); }
 .language-list div:last-child { border-bottom: 0; }
 .language-list strong { font-size: 0.8125rem; font-weight: 650; }
-.language-list span { color: var(--muted); font: 600 0.75rem/1.3 var(--font-mono), monospace; text-align: right; text-transform: uppercase; }
-.education-year { margin: 45px 0 auto; color: var(--accent-secondary); font: 650 clamp(46px, 5vw, 62px)/.9 "Segoe UI Variable", sans-serif; letter-spacing: -.065em; }
+.language-list span { color: var(--muted); font: 650 0.75rem/1.3 var(--font-mono), monospace; text-align: right; text-transform: uppercase; }
+.education-year { margin: var(--space-12) 0 auto; color: var(--accent-secondary); font: 650 clamp(46px, 5vw, 62px)/.9 var(--font-sans), sans-serif; letter-spacing: -.065em; }
 
 /* Handoff protocol */
 .contact-section { position: relative; min-height: 580px; padding: 90px max(34px, calc((100vw - var(--rail) - 1020px) / 2)); display: grid; place-items: center; overflow: hidden; background: var(--contact); color: var(--text); }
@@ -424,7 +423,7 @@ footer p { text-align: center; }
   .expertise-card { grid-template-columns: 38px 1fr; gap: var(--space-4); padding: var(--space-6) var(--space-4); }
   .expertise-card > p, .skill-list { grid-column: 2; }
   .skill-list { grid-template-columns: 1fr 1fr; }
-  .about-intro { grid-template-columns: 1fr; gap: 24px; margin-bottom: 50px; }
+  .about-intro { grid-template-columns: 1fr; gap: 24px; margin-bottom: var(--space-12); }
   .about-intro .eyebrow { grid-column: auto; }
   .about-grid { grid-template-columns: 1fr; }
   .recognition-card { grid-column: auto; }
