@@ -61,8 +61,8 @@ export default function CaseStudyPage({
   }
 
   return (
-    <main className="rail-collapsed case-study-page">
-      <header className="site-header" style={{ position: "absolute" }}>
+    <main className="rail-open case-study-page">
+      <header className="site-header">
         <button
           className="brand"
           type="button"
