@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useState, type CSSProperties } from "react";
 import dynamic from "next/dynamic";
 const ChatDrawer = dynamic(() => import("@/components/ui/chat-drawer").then(mod => mod.ChatDrawer), { ssr: false });
 import { useDecrypt } from "@/hooks/use-decrypt";
@@ -53,10 +53,23 @@ function DecryptLine({
   animatedText: string;
   className?: string;
 }) {
+  // Each real word stays in flow (invisible) and its scrambled twin is painted on top,
+  // so line breaks always come from the final text and never shift mid-animation.
+  // useDecrypt keeps spaces in place, so both strings split into the same words.
+  const animatedWords = animatedText.split(" ");
   return (
     <span className={`decrypt-line ${className}`.trim()} aria-hidden="true">
-      <span className="decrypt-line-measure">{text}</span>
-      <span className="decrypt-line-animation">{animatedText}</span>
+      <span className="decrypt-line-measure">
+        {text.split(" ").map((word, index) => (
+          <Fragment key={index}>
+            {index > 0 && " "}
+            <span className="decrypt-word">
+              {word}
+              <span className="decrypt-word-animation">{animatedWords[index] ?? word}</span>
+            </span>
+          </Fragment>
+        ))}
+      </span>
     </span>
   );
 }
