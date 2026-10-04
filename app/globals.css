@@ -155,16 +155,16 @@ main { padding-left: var(--rail); transition: padding-left .3s ease; }
 }
 
 /* Opening system brief */
-.hero { position: relative; min-height: 100svh; padding: 40px max(28px, calc((100vw - var(--rail) - var(--max)) / 2)); display: grid; align-items: stretch; overflow: hidden; }
-.hero::before { content: "MI / SYSTEM DOSSIER / 2026"; position: absolute; top: 16px; right: 22px; color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
+.hero { position: relative; min-height: 100svh; padding: 40px max(var(--space-8), calc((100vw - var(--rail) - var(--max)) / 2 + var(--space-8))); display: grid; align-items: stretch; overflow: hidden; }
+.hero::before { content: "MI / SYSTEM DOSSIER / 2026"; position: absolute; top: 16px; right: 24px; color: var(--muted); font: 650 0.75rem/1 var(--font-mono), monospace; letter-spacing: .16em; }
 .hero::after { content: ""; position: absolute; left: 62%; top: 0; bottom: 0; width: 1px; background: var(--line); }
 .hero-glow { position: absolute; right: 5%; top: 11%; width: 34vw; height: 34vw; border-radius: 50%; background: radial-gradient(circle, var(--accent-soft) 0%, transparent 60%); filter: blur(40px); transform: rotate(9deg); opacity: .8; animation: pulse-glow 8s ease-in-out infinite alternate; }
 .hero-grid { position: absolute; right: 7%; top: 13%; width: 34vw; aspect-ratio: 1; border: 1px dashed var(--line-strong); transform: rotate(-6deg); }
 .hero-content { position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: minmax(0, 1.58fr) minmax(330px, .82fr); gap: clamp(40px, 6vw, 100px); align-items: center; }
-.hero-copy { padding: 72px 0 55px; }
-.availability { width: fit-content; margin-bottom: 44px; padding: 8px 11px; display: flex; align-items: center; gap: 9px; border-left: 3px solid var(--accent-secondary); background: var(--accent-secondary-soft); color: var(--muted-strong); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; text-transform: uppercase; }
+.hero-copy { padding: 72px 0 56px; }
+.availability { width: fit-content; margin-bottom: var(--space-12); padding: 8px 12px; display: flex; align-items: center; gap: 8px; border-left: 3px solid var(--accent-secondary); background: var(--accent-secondary-soft); color: var(--muted-strong); font: 700 0.75rem/1.3 var(--font-mono), monospace; letter-spacing: .12em; text-transform: uppercase; }
 .availability-dot { width: 7px; height: 7px; background: var(--accent-secondary); animation: signal 1.8s steps(2) infinite; }
-.hero-role { margin: 0 0 19px; color: var(--accent); font: 750 0.75rem/1.3 var(--font-mono), monospace; letter-spacing: .18em; }
+.hero-role { margin: 0 0 var(--space-5); color: var(--accent); font: 700 0.75rem/1.3 var(--font-mono), monospace; letter-spacing: .16em; }
 h1 { max-width: 900px; margin: 0; font-size: clamp(2.75rem, 5.5vw, 5.5rem); font-weight: 700; line-height: 1.05; letter-spacing: -.05em; text-wrap: balance; }
 h1 > .decrypt-line { position: relative; display: block; overflow: hidden; }
 h1 > .decrypt-line:nth-child(2) { margin-left: clamp(18px, 3vw, 48px); color: var(--muted-strong); }
@@ -172,7 +172,7 @@ h1 > .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent
 .decrypt-line-measure { display: block; visibility: hidden; }
 .decrypt-line-animation { position: absolute; inset: 0; display: block; }
 .hero-description { max-width: 680px; margin: 42px 0 0 clamp(42px, 8vw, 130px); padding-left: 22px; border-left: 1px solid var(--line-strong); color: var(--muted); font-size: 1.0625rem; line-height: 1.75; }
-.hero-actions, .contact-actions { margin: 29px 0 0 clamp(42px, 8vw, 130px); display: flex; flex-wrap: wrap; gap: 8px; }
+.hero-actions, .contact-actions { margin: var(--space-8) 0 0 clamp(42px, 8vw, 130px); display: flex; flex-wrap: wrap; gap: 8px; }
 .button { min-height: 48px; padding: 0 17px; display: inline-flex; align-items: center; justify-content: space-between; gap: 38px; border: 1px solid var(--line-strong); font: 750 0.8125rem/1 var(--font-mono), monospace; letter-spacing: .08em; text-transform: uppercase; transition: transform .18s, background .18s, color .18s; }
 .button:hover { transform: translate(-2px, -2px); }
 .button:active { transform: scale(0.98); }
@@ -205,7 +205,7 @@ h1 > .accent-line { margin: 12px 0 0 clamp(24px, 5vw, 80px); color: var(--accent
 .system-row { min-height: 50px; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--line); color: var(--muted-strong); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .11em; }
 .system-row strong { color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; }
 .system-index { color: var(--accent); }
-.scroll-cue { position: absolute; z-index: 3; left: 28px; bottom: 18px; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .14em; text-transform: uppercase; }
+.scroll-cue { position: absolute; z-index: 3; left: var(--space-8); bottom: 18px; color: var(--muted); font: 700 0.75rem/1 var(--font-mono), monospace; letter-spacing: .12em; text-transform: uppercase; }
 .scroll-cue i { display: inline-block; width: 68px; height: 1px; margin-left: 12px; vertical-align: middle; background: var(--accent); }
 
 /* Signal tape */
@@ -342,6 +342,7 @@ footer p { text-align: center; }
   .hero-content { grid-template-columns: 1fr; padding-top: 45px; }
   .hero::after { display: none; }
   .hero-copy { padding-bottom: 0; }
+  .scroll-cue { display: none; }
   .system-card { max-width: 720px; min-height: 570px; }
   .case-main { grid-template-columns: 180px 1fr; }
   .expertise-card { grid-template-columns: 60px 1fr 1fr; }
@@ -389,7 +390,7 @@ footer p { text-align: center; }
   .hero-content { gap: 60px; padding: 0; }
   .hero-copy { padding: 30px 0 0; }
   .availability { margin-bottom: 32px; }
-  h1 { font-size: clamp(2.5rem, 12vw, 3.5rem); line-height: .86; }
+  h1 { font-size: clamp(2.5rem, 12vw, 3.5rem); line-height: 1.05; }
   h1 > .decrypt-line:nth-child(2) { margin-left: 0; }
   h1 .accent-line { margin: 12px 0 0 20px; }
   .hero-description, .hero-actions { margin-left: 20px; }
