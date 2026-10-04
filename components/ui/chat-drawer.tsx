@@ -67,11 +67,11 @@ export function ChatDrawer() {
       window.removeEventListener("resize", scheduleCheck);
     };
 
-    // The invitation never sits on top of the hero CTAs: on phones they often
-    // land in the bottom-right corner the floating chat occupies on first load.
+    // The invitation never sits on top of a CTA stack: on phones the hero and
+    // contact buttons often land in the bottom-right corner the floating chat occupies.
     const checkPlacement = () => {
       frame = 0;
-      const blocked = heroActionsInChatZone();
+      const blocked = ctaInChatZone();
       if (!visible && !blocked) {
         visible = true;
         setShowChatInvitation(true);
@@ -289,15 +289,15 @@ export function ChatDrawer() {
 // plus the 56px trigger, with some breathing room.
 const CHAT_ZONE = { width: 384, height: 128 };
 
-function heroActionsInChatZone() {
-  const actions = document.querySelector(".hero-actions");
-  if (!actions) return false;
-  const rect = actions.getBoundingClientRect();
-  return (
-    rect.bottom > window.innerHeight - CHAT_ZONE.height &&
-    rect.top < window.innerHeight &&
-    rect.right > window.innerWidth - CHAT_ZONE.width
-  );
+function ctaInChatZone() {
+  return [...document.querySelectorAll(".hero-actions, .contact-actions")].some((actions) => {
+    const rect = actions.getBoundingClientRect();
+    return (
+      rect.bottom > window.innerHeight - CHAT_ZONE.height &&
+      rect.top < window.innerHeight &&
+      rect.right > window.innerWidth - CHAT_ZONE.width
+    );
+  });
 }
 
 function renderMessageText(text: string): ReactNode[] {
