@@ -64,7 +64,7 @@ Todos os itens corrigíveis em código foram corrigidos e validados: build, 13/1
 - **Reproduzir:** `npm audit` → `next 9.3.4-canary.0 - 16.3.5 critical`.
 - **Antes:** `"next": "16.2.6"`, `"eslint-config-next": "16.2.6"`
 - **Depois:** `"next": "16.3.8"`, `"eslint-config-next": "16.3.8"` (minor, sem breaking change; o build e a navegação foram validados)
-- **Defesa extra:** `images: { unoptimized: true }` em `next.config.ts`, porque `next/image` não é usado. Validado: `/_next/image?...` → **404**. Isso remove a superfície de toda a classe de bugs do otimizador.
+- **Defesa extra:** `images: { unoptimized: true }` em `next.config.ts`, porque `next/image` não é usado. Validado localmente: `/_next/image?...` → **404**. Na Vercel o caminho é servido pelo otimizador gerenciado da plataforma (não pelo código do Next.js): só imagens locais, URLs externas → 400 (sem SSRF); risco residual baixo (consumo de cota de otimização).
 - **Melhor prática:** atualizações automáticas de segurança. Adicionado `.github/dependabot.yml` (semanal, com agrupamento de security updates).
 
 ## Vulnerabilidades Altas

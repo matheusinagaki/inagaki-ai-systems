@@ -5,7 +5,19 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Major versions (TypeScript, ESLint, React...) need a deliberate upgrade.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       security:
         applies-to: security-updates
+        patterns: ["*"]
+      # Packages that must move together, or the build breaks on peer ranges.
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      nextjs:
+        patterns: ["next", "eslint-config-next"]
+      minor-and-patch:
+        update-types: ["minor", "patch"]
         patterns: ["*"]
