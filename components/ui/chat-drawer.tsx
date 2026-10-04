@@ -58,12 +58,49 @@ export function ChatDrawer() {
   useEffect(() => {
     if (hasOpenedChat) return;
 
-    const showTimer = window.setTimeout(() => setShowChatInvitation(true), 1_200);
-    const hideTimer = window.setTimeout(() => setShowChatInvitation(false), 7_200);
+    let hideTimer: number | undefined;
+    let frame = 0;
+    let visible = false;
+
+    const stopWatching = () => {
+      window.removeEventListener("scroll", scheduleCheck);
+      window.removeEventListener("resize", scheduleCheck);
+    };
+
+    // The invitation never sits on top of the hero CTAs: on phones they often
+    // land in the bottom-right corner the floating chat occupies on first load.
+    const checkPlacement = () => {
+      frame = 0;
+      const blocked = heroActionsInChatZone();
+      if (!visible && !blocked) {
+        visible = true;
+        setShowChatInvitation(true);
+        hideTimer = window.setTimeout(() => {
+          stopWatching();
+          setShowChatInvitation(false);
+        }, 6_000);
+      } else if (visible && blocked) {
+        window.clearTimeout(hideTimer);
+        stopWatching();
+        setShowChatInvitation(false);
+      }
+    };
+
+    function scheduleCheck() {
+      if (!frame) frame = window.requestAnimationFrame(checkPlacement);
+    }
+
+    const showTimer = window.setTimeout(() => {
+      window.addEventListener("scroll", scheduleCheck, { passive: true });
+      window.addEventListener("resize", scheduleCheck);
+      checkPlacement();
+    }, 1_200);
 
     return () => {
       window.clearTimeout(showTimer);
       window.clearTimeout(hideTimer);
+      window.cancelAnimationFrame(frame);
+      stopWatching();
     };
   }, [hasOpenedChat]);
 
@@ -245,6 +282,21 @@ export function ChatDrawer() {
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+// Bottom-right area covered by the invitation (bottom-8, right-[5.75rem], ~251×63px)
+// plus the 56px trigger, with some breathing room.
+const CHAT_ZONE = { width: 384, height: 128 };
+
+function heroActionsInChatZone() {
+  const actions = document.querySelector(".hero-actions");
+  if (!actions) return false;
+  const rect = actions.getBoundingClientRect();
+  return (
+    rect.bottom > window.innerHeight - CHAT_ZONE.height &&
+    rect.top < window.innerHeight &&
+    rect.right > window.innerWidth - CHAT_ZONE.width
   );
 }
 
