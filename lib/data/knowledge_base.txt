@@ -3,15 +3,28 @@ Mogi das Cruzes, São Paulo, Brasil
 LinkedIn: linkedin.com/in/matheusinagaki | GitHub: github.com/matheusinagaki
   
 PROFESSIONAL SUMMARY
-ML Engineer with experience in developing generative AI solutions using open-source LLMs, RAG, and multi-agent workflows in Python. Worked on building and integrating AI pipelines, focusing on process automation, document analysis, and model deployment in production using Azure, Docker, and REST APIs. Experienced in distributed data processing, computer vision, and machine learning applications for research and corporate environments. Regional Finalist of the NASA Space Apps Challenge and IBM Call for Code with an environmental analysis project. 
+Senior Data Scientist at Radix since the beginning of August 2026, working on industrial AI, multi-tool agents and AI systems architecture. Experience in developing generative AI solutions using open-source LLMs, RAG, and multi-agent workflows in Python. Worked on building and integrating AI pipelines, focusing on process automation, document analysis, and model deployment in production using Azure, Docker, and REST APIs. Experienced in distributed data processing, computer vision, and machine learning applications for research and corporate environments. Regional Finalist of the NASA Space Apps Challenge and IBM Call for Code with an environmental analysis project.
   
 TECHNICAL SKILLS  
-• Languages and Frameworks: Python, Java, PyTorch, Scikit-Learn, OpenCV, LangChain, Hibernate.   
+• Languages and Frameworks: Python, Java, PyTorch, Scikit-Learn, OpenCV, LangChain, Hibernate.
 • Machine Learning & Generative AI: Open-Source LLMs, RAG, Fine-Tuning, Multi-Agent Workflows, XGBoost, Computer Vision.  
-• Cloud, Data & Infrastructure: Microsoft Azure, Docker, Linux, Apache Spark, Delta Live Tables, SQL Server, REST APIs.   
+• Cloud, Data & Infrastructure: Microsoft Azure, Docker, Linux, Apache Spark, Delta Live Tables, SQL Server, REST APIs, Cognite Atlas AI, Cognite Data Fusion.
 • Software Engineering: Object-Oriented Programming (OOP), API development, and system integration.   
   
 PROFESSIONAL EXPERIENCE 
+Radix | Senior Data Scientist | August 2026 – Present
+• Full-time role based in Rio de Janeiro, Brazil, in a hybrid arrangement, starting at the beginning of August 2026.
+• Industrial AI at an engineering and technology company operating in more than 35 countries across energy, manufacturing and services.
+• Designing a multi-tool AI agent intended to answer domain questions across 19+ business areas of a large industrial client, with each area exposed as a separate tool through a single conversational entry point.
+• Defined system architecture and backend integration using Python, Cognite Atlas AI and Cognite Data Fusion's industrial knowledge graph, with Gemini and GPT in a multi-model setup. Builds on prior model-selection work at TJRS, balancing task complexity, cost and data sensitivity.
+• Scoping retrieval over time series, events, technical documents and asset context, beyond document-only search.
+• The project is in development. A RAG-based MVP is the first planned deliverable, establishing retrieval and tool routing for subsequent areas. It is not yet in production; no production results are claimed.
+• Senior engineer within a team of six, working alongside a domain specialist to translate business requirements into tool definitions and retrieval scope.
+
+Applied Research & Freelance | Senior AI Engineer & Applied Researcher | 2025 – August 2026
+• Architected multi-agent pipelines using Gemini, Claude and Llama, fine-tuned LLMs on clinical datasets, and worked with n8n and Hugging Face deployment workflows.
+• This work ended in August 2026 upon joining Radix and is not a concurrent current role.
+
 Grupo Stefanini | AI Research Scientist | May 2023 – June 2025  
 • Developed pipelines using open-source LLMs to reduce dependency on proprietary APIs and enable local processing of corporate data.
 • Implemented multi-agent workflows in Python/LangChain for automated data analysis and extraction tasks.

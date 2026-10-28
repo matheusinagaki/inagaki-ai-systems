@@ -3,6 +3,9 @@
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
 import { casesData, Language, CaseStudy } from "@/data/cases";
+import { CaseArchitecture } from "@/components/sections/case-architecture";
+import { CaseThumbnail } from "@/components/ui/case-thumbnail";
+import { useCaseNavigation } from "@/components/case-navigation";
 
 export default function CaseStudyPage({
   params,
@@ -11,6 +14,7 @@ export default function CaseStudyPage({
 }) {
   const resolvedParams = use(params);
   const router = useRouter();
+  const { returnToCases } = useCaseNavigation();
   const [language, setLanguage] = useState<Language>("pt");
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   
@@ -46,6 +50,10 @@ export default function CaseStudyPage({
     localStorage.setItem("lang", lang);
   };
 
+  useEffect(() => {
+    document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
+  }, [language]);
+
   if (!caseData) {
     return (
       <main className="rail-collapsed">
@@ -66,7 +74,7 @@ export default function CaseStudyPage({
         <button
           className="brand"
           type="button"
-          onClick={() => router.push("/")}
+          onClick={() => returnToCases(caseData.slug)}
           aria-label={language === "pt" ? "Voltar ao início" : "Back to home"}
           style={{ background: "transparent", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}
         >
@@ -103,10 +111,11 @@ export default function CaseStudyPage({
         {/* Camada 1: Visão rápida */}
         <section className="hero case-hero" style={{ paddingBottom: "var(--space-16)" }}>
           <div className="hero-grid" aria-hidden="true" />
+          <CaseThumbnail slug={caseData.slug} variant="hero" />
           <div className="hero-content">
             <div className="hero-copy" style={{ maxWidth: "1000px" }}>
               <div className="availability"><span className="availability-dot" />{caseData.category[language]}</div>
-              <h1 style={{ fontSize: "clamp(2rem, 4vw, 4rem)", letterSpacing: "-.04em", marginBottom: "24px" }}>
+              <h1 tabIndex={-1} style={{ fontSize: "clamp(2rem, 4vw, 4rem)", letterSpacing: "-.04em", marginBottom: "24px" }}>
                 {caseData.title[language]}
               </h1>
               <p className="hero-description">{caseData.summary[language]}</p>
@@ -117,7 +126,7 @@ export default function CaseStudyPage({
                   <span style={{ color: "var(--muted)", textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.1em", fontWeight: 700 }}>{caseData.metricLabel[language]}</span>
                 </div>
                 <div className="case-metric" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-                  <strong style={{ fontSize: "1.25rem", color: "var(--text)" }}>Role</strong>
+                  <strong style={{ fontSize: "1.25rem", color: "var(--text)" }}>{language === "pt" ? "Minha atuação" : "My role"}</strong>
                   <span style={{ color: "var(--muted)", textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.1em", fontWeight: 700 }}>{caseData.role[language]}</span>
                 </div>
               </div>
@@ -165,13 +174,7 @@ export default function CaseStudyPage({
             </div>
           </div>
           
-          <div className="detail-card reveal" style={{ marginBottom: "32px" }}>
-            <h3 style={{ marginBottom: "16px" }}>{language === "pt" ? "Design de Arquitetura" : "Architecture Design"}</h3>
-            <div style={{ background: "var(--bg)", padding: "24px", borderRadius: "8px", border: "1px solid var(--line-strong)", fontFamily: "var(--font-mono)", fontSize: "0.875rem", color: "var(--muted-strong)", marginBottom: "24px", overflowX: "auto" }}>
-              <code>{caseData.architecture[language]}</code>
-            </div>
-            <p><strong>{language === "pt" ? "Fluxo de Dados: " : "Data Flow: "}</strong> {caseData.dataFlow[language]}</p>
-          </div>
+          <CaseArchitecture key={caseData.slug} caseStudy={caseData} language={language} />
 
           <div className="expertise-grid case-detail-grid">
             <div className="detail-card reveal">
@@ -206,7 +209,7 @@ export default function CaseStudyPage({
               {language === "pt" ? "Conversar sobre oportunidade" : "Discuss an opportunity"}
               <span aria-hidden="true">↗</span>
             </a>
-            <button className="button button-light" onClick={() => router.push("/")}>
+            <button className="button button-light" onClick={() => returnToCases(caseData.slug)}>
               {language === "pt" ? "Voltar ao Portfólio" : "Back to Portfolio"}
               <span aria-hidden="true">↑</span>
             </button>

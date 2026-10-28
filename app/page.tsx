@@ -8,6 +8,7 @@ import { CasesSection } from "@/components/sections/cases-section";
 import { ExperienceSection } from "@/components/sections/experience-section";
 import { ExpertiseSection } from "@/components/sections/expertise-section";
 import { AboutSection } from "@/components/sections/about-section";
+import { ContactFlow } from "@/components/ui/contact-flow";
 import { homeContent, type Language } from "@/data/home";
 type Theme = "light" | "dark";
 
@@ -76,6 +77,7 @@ function DecryptLine({
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("pt");
+  const [languageReady, setLanguageReady] = useState(false);
 
   const [theme, setTheme] = useState<Theme>("dark");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -90,11 +92,14 @@ export default function Home() {
 
   useEffect(() => {
     document.documentElement.lang = language === "pt" ? "pt-BR" : "en";
-    localStorage.setItem("lang", language);
-  }, [language]);
+    if (languageReady) localStorage.setItem("lang", language);
+  }, [language, languageReady]);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
+      const storedLanguage = localStorage.getItem("lang");
+      if (storedLanguage === "pt" || storedLanguage === "en") setLanguage(storedLanguage);
+      setLanguageReady(true);
       const activeTheme = document.documentElement.dataset.theme;
       if (activeTheme === "light" || activeTheme === "dark") setTheme(activeTheme);
       if (localStorage.getItem("desktop-rail") === "open") setDesktopRailOpen(true);
@@ -178,7 +183,8 @@ export default function Home() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Matheus Inagaki",
-    jobTitle: "AI Systems Engineer",
+    jobTitle: "Senior Data Scientist",
+    worksFor: { "@type": "Organization", name: "Radix" },
     url: "https://inagaki-ai-systems.vercel.app/",
     sameAs: [
       "https://github.com/matheusinagaki",
@@ -375,6 +381,7 @@ export default function Home() {
         <AboutSection language={language} />
 
         <section className="contact-section" id="contato">
+          <ContactFlow />
           <div className="contact-content reveal">
             <p className="eyebrow">{t.ctaEyebrow}</p>
             <h2>{t.ctaTitle}</h2><p>{t.ctaCopy}</p>
@@ -389,7 +396,7 @@ export default function Home() {
         </section>
       </div>
 
-      <footer>
+      <footer className="home-footer">
         <div className="footer-brand"><span className="brand-mark">MI</span><span>© {new Date().getFullYear()} Matheus Inagaki</span></div>
         <p>{t.footer}</p>
         <div className="footer-links">

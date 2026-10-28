@@ -12,7 +12,7 @@ export const homeContent = {
       ["Contato", "#contato"],
     ] as const,
     resume: "Baixar CV",
-    available: "STATUS / disponível para sistemas difíceis",
+    available: "ATUAL / IA industrial na Radix",
     role: "SENIOR AI SYSTEMS ENGINEER · GENAI · MLOPS · DATA",
     heroLine1: "IA que entende contexto.",
     heroLine2: "Engenharia que aguenta escala.",
@@ -77,10 +77,17 @@ export const homeContent = {
     current: "Atual",
     experiences: [
       {
-        period: "2025 — Atual",
+        period: "AGO 2026 — Atual",
+        company: "Radix",
+        role: "Senior Data Scientist",
+        copy: "Arquitetura e integração backend de um agente de IA para 19+ áreas de negócio de um cliente industrial, com cada área exposta como uma ferramenta. Python, Cognite Atlas AI e o grafo de conhecimento industrial do Cognite Data Fusion, com Gemini e GPT. MVP de RAG em desenvolvimento como primeira entrega, em uma equipe de seis pessoas com especialista de domínio.",
+        tags: ["Industrial AI", "Cognite", "RAG", "Multi-tool agents"],
+      },
+      {
+        period: "2025 — AGO 2026",
         company: "Pesquisa aplicada & Freelance",
         role: "Senior AI Engineer & Applied Researcher",
-        copy: "Arquitetura de pipelines multiagentes (Gemini, Claude, Llama), fine-tuning de LLMs em bases de dados clínicas e automação avançada com n8n para deploy contínuo via Hugging Face.",
+        copy: "Arquitetura de pipelines multiagentes (Gemini, Claude, Llama), fine-tuning de LLMs em bases de dados clínicas e automação avançada com n8n para deploy contínuo via Hugging Face. Atuação encerrada em agosto de 2026, com a entrada na Radix.",
         tags: ["Open-source LLMs", "Multi-agent", "Fine-tuning"],
       },
       {
@@ -172,7 +179,7 @@ export const homeContent = {
       ["Contact", "#contato"],
     ] as const,
     resume: "Download résumé",
-    available: "STATUS / available for hard systems",
+    available: "CURRENT / Industrial AI at Radix",
     role: "SENIOR AI SYSTEMS ENGINEER · GENAI · MLOPS · DATA",
     heroLine1: "AI that understands context.",
     heroLine2: "Engineering that holds at scale.",
@@ -237,10 +244,17 @@ export const homeContent = {
     current: "Current",
     experiences: [
       {
-        period: "2025 — Present",
+        period: "AUG 2026 — Present",
+        company: "Radix",
+        role: "Senior Data Scientist",
+        copy: "Architecture and backend integration for an AI agent spanning 19+ business areas of an industrial client, with each area exposed as a tool. Python, Cognite Atlas AI and Cognite Data Fusion's industrial knowledge graph, using Gemini and GPT. A RAG-based MVP is in development as the first deliverable, within a team of six alongside a domain specialist.",
+        tags: ["Industrial AI", "Cognite", "RAG", "Multi-tool agents"],
+      },
+      {
+        period: "2025 — AUG 2026",
         company: "Applied Research & Freelance",
         role: "Senior AI Engineer & Applied Researcher",
-        copy: "Architecting multi-agent pipelines (Gemini, Claude, Llama), fine-tuning LLMs on clinical datasets, and orchestrating advanced n8n automations for continuous deployment via Hugging Face.",
+        copy: "Architected multi-agent pipelines (Gemini, Claude, Llama), fine-tuned LLMs on clinical datasets, and orchestrated advanced n8n automations for continuous deployment via Hugging Face. This work ended in August 2026 upon joining Radix.",
         tags: ["Open-source LLMs", "Multi-agent", "Fine-tuning"],
       },
       {

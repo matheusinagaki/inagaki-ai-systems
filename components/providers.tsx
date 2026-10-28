@@ -2,6 +2,7 @@
 
 import { MotionConfig } from "framer-motion";
 import { ReactNode } from "react";
+import { CaseNavigationProvider } from "@/components/case-navigation";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -9,5 +10,5 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
   // reducedMotion="user" tells Framer Motion to respect the OS "prefers-reduced-motion" setting.
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  return <MotionConfig reducedMotion="user"><CaseNavigationProvider>{children}</CaseNavigationProvider></MotionConfig>;
 }

@@ -67,8 +67,7 @@ export function ChatDrawer() {
       window.removeEventListener("resize", scheduleCheck);
     };
 
-    // The invitation never sits on top of a CTA stack: on phones the hero and
-    // contact buttons often land in the bottom-right corner the floating chat occupies.
+    // Keep the invitation clear of CTA stacks and footer navigation.
     const checkPlacement = () => {
       frame = 0;
       const blocked = ctaInChatZone();
@@ -141,8 +140,10 @@ export function ChatDrawer() {
 
       {/* Trigger Button */}
       <motion.button
+        type="button"
+        data-testid="chat-trigger"
         className={cn(
-          "fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center bg-[var(--text)] text-[var(--bg)] transition-transform hover:scale-110 active:scale-95",
+          "chat-trigger fixed z-[60] flex items-center justify-center transition-transform hover:scale-110 active:scale-95",
           showChatInvitation && !hasOpenedChat && "ring-2 ring-[var(--accent)] ring-offset-2 ring-offset-[var(--bg)]",
         )}
         onClick={openChat}
@@ -152,7 +153,7 @@ export function ChatDrawer() {
         aria-label="Open AI Assistant"
         aria-describedby={showChatInvitation ? "chat-invitation-text" : undefined}
       >
-        <MessageSquare className="h-6 w-6" />
+        <MessageSquare className="h-6 w-6" aria-hidden="true" />
       </motion.button>
 
       {/* Drawer Overlay & Panel */}
@@ -268,7 +269,7 @@ export function ChatDrawer() {
                   <button
                     type="submit"
                     disabled={isLoading || !input.trim()}
-                    className="mb-1 flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--text)] text-[var(--bg)] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
+                    className="chat-send mb-1 flex h-8 w-8 shrink-0 items-center justify-center transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100"
                   >
                     <Send className="h-4 w-4" />
                   </button>
@@ -290,7 +291,7 @@ export function ChatDrawer() {
 const CHAT_ZONE = { width: 384, height: 128 };
 
 function ctaInChatZone() {
-  return [...document.querySelectorAll(".hero-actions, .contact-actions")].some((actions) => {
+  return [...document.querySelectorAll(".hero-actions, .contact-actions, .footer-links")].some((actions) => {
     const rect = actions.getBoundingClientRect();
     return (
       rect.bottom > window.innerHeight - CHAT_ZONE.height &&

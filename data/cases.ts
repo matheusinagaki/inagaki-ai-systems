@@ -1,5 +1,12 @@
 export type Language = "pt" | "en";
 
+export interface ArchitectureStage {
+  id: string;
+  title: Record<Language, string>;
+  technology: string;
+  description: Record<Language, string>;
+}
+
 export interface CaseStudy {
   slug: string;
   category: Record<Language, string>;
@@ -8,6 +15,7 @@ export interface CaseStudy {
   metric: string;
   metricLabel: Record<Language, string>;
   role: Record<Language, string>;
+  professionalContext: string;
   coreTech: string[];
 
   // Camada 2: Resumo Executivo
@@ -20,6 +28,7 @@ export interface CaseStudy {
 
   // Camada 3: Estudo Técnico
   architecture: Record<Language, string>;
+  architectureStages: ArchitectureStage[];
   dataFlow: Record<Language, string>;
   decisions: Record<Language, string[]>;
   tradeOffs: Record<Language, string[]>;
@@ -45,6 +54,7 @@ export const casesData: CaseStudy[] = [
     metric: "−40%",
     metricLabel: { pt: "tempo de processamento", en: "processing time" },
     role: { pt: "Líder de Arquitetura de IA", en: "Lead AI Architect" },
+    professionalContext: "Grupo Stefanini",
     coreTech: ["RAG", "LangChain", "Azure", "NLP"],
 
     // Camada 2
@@ -78,6 +88,53 @@ export const casesData: CaseStudy[] = [
       pt: "Ingestão de PDFs via OCR (Azure Document Intelligence) → Chunking Semântico → ChromaDB → LangChain → LLM via Azure OpenAI.",
       en: "PDF Ingestion via OCR (Azure Document Intelligence) → Semantic Chunking → ChromaDB → LangChain → LLM via Azure OpenAI."
     },
+    architectureStages: [
+      {
+        id: "reading",
+        title: { pt: "Leitura", en: "Reading" },
+        technology: "Azure Document Intelligence",
+        description: {
+          pt: "Extração do conteúdo textual dos documentos jurídicos em PDF por OCR.",
+          en: "OCR extracts the text content from legal PDF documents."
+        }
+      },
+      {
+        id: "preparation",
+        title: { pt: "Preparação", en: "Preparation" },
+        technology: "Semantic chunking",
+        description: {
+          pt: "Divisão do conteúdo em trechos semânticos para compor a base de recuperação.",
+          en: "Content is split into semantic chunks to build the retrieval knowledge base."
+        }
+      },
+      {
+        id: "indexing",
+        title: { pt: "Indexação", en: "Indexing" },
+        technology: "ChromaDB",
+        description: {
+          pt: "Os trechos são vetorizados e armazenados no ChromaDB para recuperação de contexto.",
+          en: "Chunks are vectorized and stored in ChromaDB for context retrieval."
+        }
+      },
+      {
+        id: "retrieval",
+        title: { pt: "Recuperação", en: "Retrieval" },
+        technology: "LangChain",
+        description: {
+          pt: "O LangChain orquestra a recuperação dos trechos que dão suporte à resposta.",
+          en: "LangChain orchestrates retrieval of the passages that support the response."
+        }
+      },
+      {
+        id: "generation",
+        title: { pt: "Geração", en: "Generation" },
+        technology: "Azure OpenAI",
+        description: {
+          pt: "Geração da síntese final embasada no contexto jurídico recuperado.",
+          en: "The final synthesis is generated from the retrieved legal context."
+        }
+      }
+    ],
     dataFlow: {
       pt: "Os documentos legais são digitalizados via OCR e vetorizados no ChromaDB. O LangChain orquestra a recuperação e o Azure OpenAI gera a síntese final embasada.",
       en: "Legal documents are digitized via OCR and vectorized in ChromaDB. LangChain orchestrates the retrieval and Azure OpenAI generates the grounded summary."
@@ -128,6 +185,7 @@ export const casesData: CaseStudy[] = [
     metric: "92%",
     metricLabel: { pt: "acurácia em produção", en: "production accuracy" },
     role: { pt: "Data Scientist & Data Engineer", en: "Data Scientist & Data Engineer" },
+    professionalContext: "Grupo Stefanini",
     coreTech: ["Python", "SVM", "Apache Spark", "Delta Live Tables"],
 
     // Camada 2
@@ -161,6 +219,53 @@ export const casesData: CaseStudy[] = [
       pt: "Ingestão via Delta Live Tables -> Processamento Apache Spark -> Classificação SVM -> Data Lake -> Painéis de BI.",
       en: "Ingestion via Delta Live Tables -> Apache Spark Processing -> SVM Classification -> Data Lake -> BI Dashboards."
     },
+    architectureStages: [
+      {
+        id: "ingestion",
+        title: { pt: "Ingestão", en: "Ingestion" },
+        technology: "Delta Live Tables",
+        description: {
+          pt: "Ingestão e preparação dos tickets no ecossistema Databricks com Delta Live Tables.",
+          en: "Tickets are ingested and prepared in the Databricks ecosystem using Delta Live Tables."
+        }
+      },
+      {
+        id: "processing",
+        title: { pt: "Processamento", en: "Processing" },
+        technology: "Apache Spark",
+        description: {
+          pt: "Processamento distribuído dos dados dos tickets no cluster Spark.",
+          en: "Ticket data is processed across the Spark cluster."
+        }
+      },
+      {
+        id: "classification",
+        title: { pt: "Classificação", en: "Classification" },
+        technology: "SVM",
+        description: {
+          pt: "O classificador SVM integra a inferência ao pipeline distribuído de dados.",
+          en: "The SVM classifier integrates inference into the distributed data pipeline."
+        }
+      },
+      {
+        id: "storage",
+        title: { pt: "Persistência", en: "Storage" },
+        technology: "Data Lake",
+        description: {
+          pt: "Os resultados da classificação são gravados no Data Lake para consumo analítico.",
+          en: "Classification results are stored in the Data Lake for analytics."
+        }
+      },
+      {
+        id: "analytics",
+        title: { pt: "Análise", en: "Analytics" },
+        technology: "Business Intelligence",
+        description: {
+          pt: "Os dados classificados alimentam os painéis gerenciais de Business Intelligence.",
+          en: "Classified data feeds management Business Intelligence dashboards."
+        }
+      }
+    ],
     dataFlow: {
       pt: "Os tickets fluem pelo ecossistema Databricks para higienização e limpeza inicial, sendo enviados ao cluster Spark para inferência massiva e gravados de volta no Data Lake.",
       en: "Tickets flow through the Databricks ecosystem for initial hygiene and cleaning, being sent to the Spark cluster for massive inference and written back to the Data Lake."
@@ -209,6 +314,7 @@ export const casesData: CaseStudy[] = [
     metric: "Private",
     metricLabel: { pt: "segurança total dos dados", en: "total data security" },
     role: { pt: "AI Research Scientist", en: "AI Research Scientist" },
+    professionalContext: "Grupo Stefanini",
     coreTech: ["Llama", "Fine-tuning", "Docker", "Self-hosted LLM"],
 
     // Camada 2
@@ -242,6 +348,44 @@ export const casesData: CaseStudy[] = [
       pt: "Servidor Bare-metal High-end → Docker → Ollama (Motor de Inferência) → API Interna REST.",
       en: "High-end Bare-metal Server → Docker → Ollama (Inference Engine) → Internal REST API."
     },
+    architectureStages: [
+      {
+        id: "infrastructure",
+        title: { pt: "Infraestrutura", en: "Infrastructure" },
+        technology: "Bare-metal / On-premise",
+        description: {
+          pt: "Hardware interno de alta performance fornece os recursos para executar os modelos localmente.",
+          en: "High-performance internal hardware provides the resources to run models locally."
+        }
+      },
+      {
+        id: "containers",
+        title: { pt: "Isolamento", en: "Isolation" },
+        technology: "Docker",
+        description: {
+          pt: "Contêineres Docker isolam o ambiente de execução e tornam o deploy reproduzível.",
+          en: "Docker containers isolate the runtime environment and make deployment reproducible."
+        }
+      },
+      {
+        id: "inference",
+        title: { pt: "Inferência", en: "Inference" },
+        technology: "Ollama / Llama",
+        description: {
+          pt: "O Ollama serve os modelos da família Llama dentro da infraestrutura corporativa.",
+          en: "Ollama serves Llama-family models within the corporate infrastructure."
+        }
+      },
+      {
+        id: "integration",
+        title: { pt: "Integração", en: "Integration" },
+        technology: "REST API",
+        description: {
+          pt: "Uma API REST interna disponibiliza a inferência para as aplicações corporativas.",
+          en: "An internal REST API makes inference available to corporate applications."
+        }
+      }
+    ],
     dataFlow: {
       pt: "Modelos base da família Llama foram ajustados via PEFT e LoRA, empacotados no Ollama e servidos como microsserviços em contêineres Docker isolados.",
       en: "Base models from the Llama family were fine-tuned via PEFT and LoRA, packaged into Ollama, and served as microservices in isolated Docker containers."
